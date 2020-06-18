@@ -1,16 +1,10 @@
 # flutter_dev_connector
 
-A new Flutter project.
+A Flutter version of the dev_connector client developed in "MERN Stack Front To Back: Full Stack React, Redux & Node.js" at https://www.udemy.com/course/mern-stack-front-to-back/
+
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+In order to generate JSON serializers:
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+    flutter pub run build_runner build
