@@ -8,6 +8,7 @@ part of 'profile.dart';
 
 Profile _$ProfileFromJson(Map<String, dynamic> json) {
   return Profile(
+    id: json['_id'] as String,
     user: json['user'] == null
         ? null
         : User.fromJson(json['user'] as Map<String, dynamic>),
@@ -34,6 +35,7 @@ Profile _$ProfileFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ProfileToJson(Profile instance) => <String, dynamic>{
+      '_id': instance.id,
       'user': instance.user,
       'company': instance.company,
       'website': instance.website,
@@ -68,6 +70,7 @@ Map<String, dynamic> _$SocialToJson(Social instance) => <String, dynamic>{
 
 Experience _$ExperienceFromJson(Map<String, dynamic> json) {
   return Experience(
+    id: json['_id'] as String,
     title: json['title'] as String,
     company: json['company'] as String,
     location: json['location'] as String,
@@ -80,6 +83,7 @@ Experience _$ExperienceFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$ExperienceToJson(Experience instance) =>
     <String, dynamic>{
+      '_id': instance.id,
       'title': instance.title,
       'company': instance.company,
       'location': instance.location,
@@ -91,6 +95,7 @@ Map<String, dynamic> _$ExperienceToJson(Experience instance) =>
 
 Education _$EducationFromJson(Map<String, dynamic> json) {
   return Education(
+    id: json['_id'] as String,
     school: json['school'] as String,
     degree: json['degree'] as String,
     fieldofstudy: json['fieldofstudy'] as String,
@@ -102,6 +107,7 @@ Education _$EducationFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$EducationToJson(Education instance) => <String, dynamic>{
+      '_id': instance.id,
       'school': instance.school,
       'degree': instance.degree,
       'fieldofstudy': instance.fieldofstudy,
@@ -109,4 +115,26 @@ Map<String, dynamic> _$EducationToJson(Education instance) => <String, dynamic>{
       'to': instance.to?.toIso8601String(),
       'current': instance.current,
       'description': instance.description,
+    };
+
+Repo _$RepoFromJson(Map<String, dynamic> json) {
+  return Repo(
+    id: json['_id'] as String,
+    htmlUrl: json['html_url'] as String,
+    name: json['name'] as String,
+    description: json['description'] as String,
+    stargazersCount: json['stargazers_count'] as int,
+    watchersCount: json['watchers_count'] as int,
+    forksCount: json['forks_count'] as int,
+  );
+}
+
+Map<String, dynamic> _$RepoToJson(Repo instance) => <String, dynamic>{
+      '_id': instance.id,
+      'html_url': instance.htmlUrl,
+      'name': instance.name,
+      'description': instance.description,
+      'stargazers_count': instance.stargazersCount,
+      'watchers_count': instance.watchersCount,
+      'forks_count': instance.forksCount,
     };

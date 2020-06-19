@@ -6,6 +6,8 @@ part 'profile.g.dart';
 
 @JsonSerializable()
 class Profile {
+  @JsonKey(name: '_id')
+  String id;
   User user;
   String company;
   String website;
@@ -20,6 +22,7 @@ class Profile {
   DateTime date;
 
   Profile({
+    this.id,
     this.user,
     this.company,
     this.website,
@@ -59,6 +62,8 @@ class Social {
 
 @JsonSerializable()
 class Experience {
+  @JsonKey(name: '_id')
+  String id;
   String title;
   String company;
   String location;
@@ -68,6 +73,7 @@ class Experience {
   String description;
 
   Experience({
+    this.id,
     this.title,
     this.company,
     this.location,
@@ -83,6 +89,8 @@ class Experience {
 
 @JsonSerializable()
 class Education {
+  @JsonKey(name: '_id')
+  String id;
   String school;
   String degree;
   String fieldofstudy;
@@ -92,6 +100,7 @@ class Education {
   String description;
 
   Education({
+    this.id,
     this.school,
     this.degree,
     this.fieldofstudy,
@@ -103,4 +112,33 @@ class Education {
   factory Education.fromJson(Map<String, dynamic> json) =>
       _$EducationFromJson(json);
   Map<String, dynamic> toJson() => _$EducationToJson(this);
+}
+
+@JsonSerializable()
+class Repo {
+  @JsonKey(name: '_id')
+  final String id;
+  @JsonKey(name: 'html_url')
+  final String htmlUrl;
+  final String name;
+  final String description;
+  @JsonKey(name: 'stargazers_count')
+  final int stargazersCount;
+  @JsonKey(name: 'watchers_count')
+  final int watchersCount;
+  @JsonKey(name: 'forks_count')
+  final int forksCount;
+
+  Repo({
+    this.id,
+    this.htmlUrl,
+    this.name,
+    this.description,
+    this.stargazersCount,
+    this.watchersCount,
+    this.forksCount,
+  });
+
+  factory Repo.fromJson(Map<String, dynamic> json) => _$RepoFromJson(json);
+  Map<String, dynamic> toJson() => _$RepoToJson(this);
 }
