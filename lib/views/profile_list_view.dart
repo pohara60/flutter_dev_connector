@@ -40,6 +40,7 @@ class ProfileListTileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     return ListTile(
       leading: profile.user.avatar == null
           ? null
@@ -49,9 +50,7 @@ class ProfileListTileView extends StatelessWidget {
             ),
       title: Text(
         profile.user.name,
-        style: TextStyle(
-          fontSize: 24,
-        ),
+        style: themeData.textTheme.headline6,
       ),
       subtitle: Text(
         profile.status +

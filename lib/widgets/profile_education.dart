@@ -11,14 +11,14 @@ class ProfileEducationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     final dateFormatter = DateFormat('yyyy/MM/dd');
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Education',
-          style: TextStyle(
-            fontSize: 24,
-          ),
+          style: themeData.textTheme.headline5,
         ),
         ListView.separated(
           shrinkWrap: true,
@@ -28,8 +28,11 @@ class ProfileEducationWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 10),
-              Text(education[index].school,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              Text(
+                education[index].school,
+                style: themeData.textTheme.subtitle1
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
               SizedBox(height: 4),
               Text(dateFormatter.format(education[index].from) +
                   ' - ' +

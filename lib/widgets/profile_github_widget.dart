@@ -13,6 +13,7 @@ class ProfileGithubWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     return Consumer<ProfileService>(
       builder: (ctx, profileService, _) => FutureBuilder(
         future: profileService.getGithubRepos(username),
@@ -24,12 +25,11 @@ class ProfileGithubWidget extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  FaIcon(FontAwesomeIcons.github),
+                  FaIcon(FontAwesomeIcons.github, color: themeData.accentColor),
+                  SizedBox(width: 10),
                   Text(
                     'Github Repos',
-                    style: TextStyle(
-                      fontSize: 24,
-                    ),
+                    style: themeData.textTheme.headline5,
                   ),
                 ],
               ),
@@ -46,57 +46,38 @@ class ProfileGithubWidget extends StatelessWidget {
                         children: [
                           Text(
                             repos[index].name,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: themeData.textTheme.headline6,
                           ),
                           if (repos[index].description != null)
                             Text(
                               repos[index].description,
-                              // overflow: TextOverflow.ellipsis,
-                              // maxLines: 5,
-                              // softWrap: true,
+                              style: themeData.textTheme.bodyText1,
                             ),
                         ],
                       ),
                     ),
                     Column(
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(width: 1), color: Colors.cyan),
-                          child: Center(
-                              child: Text(
+                        CountBox(
+                          color: Theme.of(context).accentColor,
+                          text: Text(
                             'Stars: ${repos[index].stargazersCount}',
                             style: TextStyle(color: Colors.white),
-                          )),
-                          padding: EdgeInsets.all(4),
-                          width: 100,
+                          ),
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(width: 1),
-                              color: Colors.black),
-                          child: Center(
-                              child: Text(
+                        CountBox(
+                          color: Theme.of(context).primaryColor,
+                          text: Text(
                             'Watchers: ${repos[index].watchersCount}',
                             style: TextStyle(color: Colors.white),
-                          )),
-                          padding: EdgeInsets.all(4),
-                          width: 100,
+                          ),
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                              border: Border.all(width: 1),
-                              color: Colors.white),
-                          child: Center(
-                              child: Text(
+                        CountBox(
+                          color: Colors.white,
+                          text: Text(
                             'Forks: ${repos[index].forksCount}',
-                            style: TextStyle(color: Colors.black45),
-                          )),
-                          padding: EdgeInsets.all(4),
-                          width: 100,
+                            style: TextStyle(color: Colors.black),
+                          ),
                         ),
                       ],
                     ),
@@ -108,6 +89,22 @@ class ProfileGithubWidget extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class CountBox extends StatelessWidget {
+  final Text text;
+  final Color color;
+  const CountBox({@required this.text, @required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(border: Border.all(width: 1), color: color),
+      child: Center(child: text),
+      padding: EdgeInsets.all(4),
+      width: 100,
     );
   }
 }

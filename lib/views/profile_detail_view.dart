@@ -45,7 +45,7 @@ class ProfileDetailView extends StatelessWidget {
                   section(
                     context: context,
                     child: ProfileTopWidget(profile),
-                    color: Colors.cyan,
+                    color: Theme.of(context).accentColor,
                   ),
                   SizedBox(height: 20),
                   section(context: context, child: ProfileAboutWidget(profile)),
@@ -72,7 +72,6 @@ class ProfileDetailView extends StatelessWidget {
 }
 
 Widget section({BuildContext context, Widget child, Color color}) {
-  //if (color == null) color = Theme.of(context).backgroundColor;
   return Material(
     color:
         color, // Set background color on Material so IconButton splash is visible

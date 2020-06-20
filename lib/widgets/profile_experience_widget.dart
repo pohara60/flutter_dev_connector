@@ -12,13 +12,13 @@ class ProfileExperienceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateFormatter = DateFormat('yyyy/MM/dd');
+    final themeData = Theme.of(context);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Experience',
-          style: TextStyle(
-            fontSize: 24,
-          ),
+          style: themeData.textTheme.headline5,
         ),
         ListView.separated(
           shrinkWrap: true,
@@ -28,8 +28,11 @@ class ProfileExperienceWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 10),
-              Text(experience[index].company,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              Text(
+                experience[index].company,
+                style: themeData.textTheme.subtitle1
+                    .copyWith(fontWeight: FontWeight.bold),
+              ),
               SizedBox(height: 4),
               Text(dateFormatter.format(experience[index].from) +
                   ' - ' +

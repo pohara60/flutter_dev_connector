@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
+import 'package:flutter_dev_connector/utils/app_theme.dart';
 import 'package:flutter_dev_connector/views/profile_list_view.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       // return MaterialApp(
       child: MaterialApp(
         title: 'Flutter Dev Connector',
-        // theme: ThemeData(
+        theme: getAppTheme(context),
         //     primarySwatch: Colors.purple,
         //     accentColor: Colors.deepOrange,
         //     fontFamily: 'Lato',

@@ -10,34 +10,31 @@ class ProfileAboutWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     return Column(
       children: [
         if (profile.bio != null)
           Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                '${profile.user.name}\'s bio',
-                style: TextStyle(
-                  fontSize: 24,
-                ),
+                '${profile.user.name}\'s Bio',
+                style: themeData.textTheme.headline5,
               ),
               SizedBox(
                 height: 10,
               ),
               Text(
                 profile.bio,
-                style: TextStyle(
-                  fontSize: 16,
-                ),
+                style: themeData.textTheme.subtitle1,
+                textAlign: TextAlign.center,
               ),
             ],
           ),
         Divider(height: 10, thickness: 2),
         Text(
           'Skill Set',
-          style: TextStyle(
-            fontSize: 24,
-          ),
+          style: themeData.textTheme.headline5,
         ),
         Wrap(
           alignment: WrapAlignment.center,

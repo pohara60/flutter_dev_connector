@@ -20,6 +20,7 @@ class ProfileTopWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeData = Theme.of(context);
     return Column(
       children: [
         if (profile.user.avatar != null)
@@ -28,19 +29,17 @@ class ProfileTopWidget extends StatelessWidget {
             // backgroundColor: Colors.transparent,
           ),
         Text(
+          profile.user.name,
+          style: themeData.textTheme.headline5.copyWith(color: Colors.white),
+        ),
+        Text(
           profile.status +
               (profile.company != null ? " at " + profile.company : null),
-          style: TextStyle(
-            fontSize: 24,
-            color: Colors.white,
-          ),
+          style: themeData.textTheme.headline6.copyWith(color: Colors.white),
         ),
         Text(
           profile.location,
-          style: TextStyle(
-            fontSize: 24,
-            color: Colors.white,
-          ),
+          style: themeData.textTheme.headline6.copyWith(color: Colors.white),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
