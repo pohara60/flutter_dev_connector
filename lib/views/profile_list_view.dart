@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
+import 'package:flutter_dev_connector/utils/logger.dart';
 import 'package:flutter_dev_connector/views/profile_detail_view.dart';
 import 'package:provider/provider.dart';
 
 class ProfileListView extends StatelessWidget {
   static const routeName = '/profiles';
+  final log = getLogger('ProfileListView');
 
   @override
   Widget build(BuildContext context) {
+    log.v('build called');
     return Scaffold(
       appBar: AppBar(
         title: Text('Dev Connector'),

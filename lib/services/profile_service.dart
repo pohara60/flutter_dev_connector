@@ -38,7 +38,8 @@ class ProfileService with ChangeNotifier {
       _profile = null;
       _isLoading = false;
     }
-    notifyListeners();
+    // Do not notifyListeners because not required
+    //notifyListeners();
     return profile;
   }
 
@@ -66,7 +67,8 @@ class ProfileService with ChangeNotifier {
       _profiles = null;
       _isLoading = false;
     }
-    notifyListeners();
+    // Do not notifyListeners because not required
+    //notifyListeners();
     return profiles;
   }
 
@@ -89,7 +91,8 @@ class ProfileService with ChangeNotifier {
       _profile = null;
       _isLoading = false;
     }
-    notifyListeners();
+    // Do not notifyListeners because not required
+    //notifyListeners();
     return profile;
   }
 
@@ -122,7 +125,7 @@ class ProfileService with ChangeNotifier {
       _repos = null;
       _isLoading = false;
     }
-    // Do not notifyListeners because causes loop, also not required
+    // Do not notifyListeners because not required, also causes loop
     //notifyListeners();
     return repos;
   }

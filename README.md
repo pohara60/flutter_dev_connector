@@ -6,6 +6,7 @@ A Flutter version of the dev_connector client developed in [MERN Stack Front To 
 ## To Do
 
 * Tidy Up
+  * Split Profile widgets
   * Logging
   * Sort out Provider vs ChangeNotifierProvider
   * Sort out Theme to avoid repeated fontSize and color values
