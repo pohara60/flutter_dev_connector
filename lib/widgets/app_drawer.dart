@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dev_connector/services/auth_service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
-  @override
   Widget buildListTile(String title, IconData icon, Function tapHandler) =>
       ListTile(
         leading: Icon(
@@ -39,17 +40,15 @@ class AppDrawer extends StatelessWidget {
             () => Navigator.of(context).pushReplacementNamed('/'),
           ),
           buildListTile('Register', FontAwesomeIcons.pencilAlt, () {
-            //Navigator.of(context)
-            //.pushReplacement(CustomRoute(builder: (ctx) => OrdersScreen()));
+            Navigator.of(context).pushReplacementNamed('/');
           }),
           buildListTile('Login', FontAwesomeIcons.signInAlt, () {
-            //Navigator.of(context)
-            //.pushReplacement(CustomRoute(builder: (ctx) => OrdersScreen()));
+            Navigator.of(context).pushReplacementNamed('/');
           }),
           buildListTile('Logout', FontAwesomeIcons.signOutAlt, () {
             // Navigator.of(context).pop();
-            Navigator.of(context).pushReplacementNamed('/');
-            //Provider.of<Auth>(context, listen: false).logout();
+            // Navigator.of(context).pushReplacementNamed('/');
+            Provider.of<AuthService>(context, listen: false).logout();
           }),
         ],
       ),

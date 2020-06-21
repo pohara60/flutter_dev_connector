@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dev_connector/services/auth_service.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/app_theme.dart';
+import 'package:flutter_dev_connector/utils/logger.dart';
+import 'package:flutter_dev_connector/views/auth_screen.dart';
+import 'package:flutter_dev_connector/views/dashboard_view.dart';
 import 'package:flutter_dev_connector/views/profile_list_view.dart';
+import 'package:flutter_dev_connector/views/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(DevConnectorApp());
 }
 
-class MyApp extends StatelessWidget {
+class DevConnectorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final log = getLogger('DevConnectorApp');
     return MultiProvider(
       providers: [
-        // ChangeNotifierProvider<Auth>(
-        //   create: (ctx) => Auth(),
-        // ),
+        ChangeNotifierProvider<AuthService>(
+          create: (ctx) => AuthService(),
+        ),
         // ChangeNotifierProxyProvider<Auth, Products>(
         //   create: (ctx) => Products(),
         //   update: (ctx, auth, products) => products
@@ -24,40 +30,34 @@ class MyApp extends StatelessWidget {
         //       auth.userId,
         //     ),
         // ),
-        ChangeNotifierProvider<ProfileService>(
+        ChangeNotifierProxyProvider<AuthService, ProfileService>(
           create: (ctx) => ProfileService(),
+          update: (ctx, authService, profileService) =>
+              profileService..updateAuth(authService),
         ),
       ],
-      // child: Consumer<Auth>(
-      //   builder: (ctx, auth, _) {
-      //     ifAuth(targetScreen) => auth.isAuth ? targetScreen : AuthScreen();
-      // return MaterialApp(
-      child: MaterialApp(
-        title: 'Flutter Dev Connector',
-        theme: getAppTheme(context),
-        //     primarySwatch: Colors.purple,
-        //     accentColor: Colors.deepOrange,
-        //     fontFamily: 'Lato',
-        //     pageTransitionsTheme: PageTransitionsTheme(builders: {
-        //       TargetPlatform.android: CustomerPageTransitionBuilder(),
-        //       TargetPlatform.iOS: CustomerPageTransitionBuilder(),
-        //     })),
-        // home: auth.isAuth
-        //     ? ProductsOverviewScreen()
-        //     : FutureBuilder(
-        //         future: auth.tryAutoLogin(),
-        //         builder: (ctx, authSnapshot) =>
-        //             authSnapshot.connectionState ==
-        //                     ConnectionState.waiting
-        //                 ? SplashScreen()
-        //                 : AuthScreen(),
-        //       ),
-        home: ProfileListView(),
-        routes: {
-          // ProfileListView.routeName: (ctx) => ifAuth(ProfileListView()),
-          ProfileListView.routeName: (ctx) => ProfileListView(),
-        },
-      ),
+      child: Consumer<AuthService>(builder: (ctx, authService, _) {
+        Widget ifAuth(Widget targetScreen) =>
+            authService.isAuth ? targetScreen : AuthScreen();
+        log.v('building MaterialApp with isAuth=${authService.isAuth}');
+        return MaterialApp(
+          title: 'Flutter Dev Connector',
+          theme: getAppTheme(context),
+          home: authService.isAuth
+              ? DashboardView()
+              : FutureBuilder(
+                  future: authService.tryAutoLogin(),
+                  builder: (ctx, authSnapshot) =>
+                      authSnapshot.connectionState == ConnectionState.waiting
+                          ? SplashScreen()
+                          : AuthScreen(),
+                ),
+          routes: {
+            DashboardView.routeName: (ctx) => ifAuth(DashboardView()),
+            ProfileListView.routeName: (ctx) => ProfileListView(),
+          },
+        );
+      }),
     );
   }
 }

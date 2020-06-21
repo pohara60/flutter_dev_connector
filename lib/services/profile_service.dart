@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dev_connector/config/config.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
+import 'package:flutter_dev_connector/models/user.dart';
+import 'package:flutter_dev_connector/services/auth_service.dart';
 import 'package:http/http.dart' as http;
 
 class ProfileService with ChangeNotifier {
@@ -12,6 +14,7 @@ class ProfileService with ChangeNotifier {
   List<Repo> _repos;
   bool _isLoading;
   Map _error;
+  AuthService _authService;
 
   Profile get profile => _profile;
   List<Profile> get profiles => _profiles;
@@ -22,7 +25,8 @@ class ProfileService with ChangeNotifier {
   Future<Profile> getCurrentProfile() async {
     try {
       _isLoading = true;
-      final res = await http.get("$BASE_URL/api/profile/me");
+      final headers = _authService?.getAuthHeader();
+      final res = await http.get("$BASE_URL/api/profile/me", headers: headers);
       if (res.statusCode == 200) {
         _profile = Profile.fromJson(jsonDecode(res.body));
       } else {
@@ -128,5 +132,16 @@ class ProfileService with ChangeNotifier {
     // Do not notifyListeners because not required, also causes loop
     //notifyListeners();
     return repos;
+  }
+
+  void updateAuth(AuthService authService) {
+    _authService = authService;
+    User user = authService.user;
+
+    if (_profile != null && user?.id != _profile.user.id) {
+      // Clear current user profile
+      _profile = null;
+      notifyListeners();
+    }
   }
 }

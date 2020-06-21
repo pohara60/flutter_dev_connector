@@ -1,2 +1,2 @@
-const BASE_URL = 'http://10.0.2.2:5000';
+const BASE_URL = 'http://192.168.1.159:5000';
 const FAKE_GITHUB = true;
