@@ -6,15 +6,14 @@ A Flutter version of the dev_connector client developed in [MERN Stack Front To 
 ## To Do
 
 * Tidy Up
-  * Sort out Provider vs ChangeNotifierProvider
-  * Sort out Theme to avoid repeated fontSize and color values
-  * Use Cards
+  * 
 * Add Authentication
   * /register
   * /login
   * Save Webtoken
   * Authenticated Routes
-* Improve Routes
+* Add NavBar
+  * Improve Routes
 * Dashboard
   * /dashboard
   * /create-profile

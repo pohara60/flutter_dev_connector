@@ -3,11 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 
 ThemeData getAppTheme(BuildContext context) {
   final textTheme = Theme.of(context).textTheme;
-  final primaryColor = Colors.grey[850];
   final accentColor = Colors.cyan[400];
 
-  return ThemeData(
-    primaryColor: primaryColor,
+  final themeData = ThemeData(
+    primarySwatch: Colors.grey,
     accentColor: accentColor,
     textTheme: GoogleFonts.ralewayTextTheme(textTheme).copyWith(
       headline1: textTheme.headline1.copyWith(color: accentColor),
@@ -17,4 +16,5 @@ ThemeData getAppTheme(BuildContext context) {
       headline5: textTheme.headline5.copyWith(color: accentColor),
     ),
   );
+  return themeData;
 }
