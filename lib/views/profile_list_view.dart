@@ -3,6 +3,7 @@ import 'package:flutter_dev_connector/models/profile.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
 import 'package:flutter_dev_connector/views/profile_detail_view.dart';
+import 'package:flutter_dev_connector/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 
 class ProfileListView extends StatelessWidget {
@@ -16,6 +17,7 @@ class ProfileListView extends StatelessWidget {
       appBar: AppBar(
         title: Text('Dev Connector'),
       ),
+      drawer: AppDrawer(),
       body: Consumer<ProfileService>(
         builder: (ctx, profileService, _) => FutureBuilder(
           future: profileService.getProfiles(),
