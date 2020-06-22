@@ -7,11 +7,6 @@ A Flutter version of the dev_connector client developed in [MERN Stack Front To 
 
 * Tidy Up
   * 
-* Add Authentication
-  * /register
-  * /login
-  * Save Webtoken
-  * Authenticated Routes
 * Add NavBar
   * Improve Routes
 * Dashboard
