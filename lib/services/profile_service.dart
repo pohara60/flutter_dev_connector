@@ -6,9 +6,12 @@ import 'package:flutter_dev_connector/config/config.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
 import 'package:flutter_dev_connector/models/user.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
+import 'package:flutter_dev_connector/utils/logger.dart';
 import 'package:http/http.dart' as http;
 
 class ProfileService with ChangeNotifier {
+  static final _log = getLogger('ProfileService');
+
   Profile _profile;
   List<Profile> _profiles;
   List<Repo> _repos;
@@ -143,5 +146,13 @@ class ProfileService with ChangeNotifier {
       _profile = null;
       notifyListeners();
     }
+  }
+
+  addProfile(Profile profile) {
+    _log.v('addProfile');
+  }
+
+  updateProfile(String id, Profile profile) {
+    _log.v('updateProfile');
   }
 }
