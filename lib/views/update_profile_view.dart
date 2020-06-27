@@ -117,6 +117,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
     try {
       _profile = await Provider.of<ProfileService>(context, listen: false)
           .updateProfile(_profile);
+      Navigator.of(context).pop();
     } catch (error) {
       await showDialog<Null>(
         context: context,
@@ -133,7 +134,6 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
         ),
       );
     }
-    Navigator.of(context).pop();
   }
 
   @override

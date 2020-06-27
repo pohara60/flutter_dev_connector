@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_dev_connector/utils/date_format.dart';
 
 class ProfileExperienceWidget extends StatelessWidget {
   final List<Experience> experience;
@@ -11,7 +11,6 @@ class ProfileExperienceWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dateFormatter = DateFormat('yyyy/MM/dd');
     final themeData = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -34,11 +33,8 @@ class ProfileExperienceWidget extends StatelessWidget {
                     .copyWith(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 4),
-              Text(dateFormatter.format(experience[index].from) +
-                  ' - ' +
-                  (experience[index].to == null
-                      ? 'Now'
-                      : dateFormatter.format(experience[index].to))),
+              Text(formatDateRange(
+                  experience[index].from, experience[index].to)),
               SizedBox(height: 4),
               Row(
                 children: [

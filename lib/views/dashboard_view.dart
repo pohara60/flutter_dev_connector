@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
+import 'package:flutter_dev_connector/utils/date_format.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
 import 'package:flutter_dev_connector/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
@@ -65,19 +66,26 @@ class DashboardView extends StatelessWidget {
                     ],
                   ),
                 if (profile != null)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      DashboardActionsWidget(),
-                      ExperienceWidget(profile.experience),
-                      EducationWidget(profile.education),
-                      FlatButton.icon(
-                        icon: Icon(Icons.remove),
-                        color: themeData.errorColor,
-                        label: Text('Delete My Account'),
-                        onPressed: () {},
-                      ),
-                    ],
+                  Expanded(
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        DashboardActionsWidget(),
+                        ExperienceWidget(profile.experience),
+                        EducationWidget(profile.education),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            FlatButton.icon(
+                              icon: Icon(Icons.remove),
+                              color: themeData.errorColor,
+                              label: Text('Delete My Account'),
+                              onPressed: () {},
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
               ],
             ),
@@ -117,7 +125,76 @@ class ExperienceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log.v('build called');
-    return Center(child: Text('Experience'));
+    final themeData = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Experience Credentials', style: themeData.textTheme.headline5),
+        SizedBox(height: 10),
+        Table(columnWidths: {
+          3: FixedColumnWidth(30)
+        }, children: [
+          TableRow(
+            decoration: BoxDecoration(
+              color: themeData.backgroundColor,
+            ),
+            children: [
+              PaddedCell('Company', heading: true, themeData: themeData),
+              PaddedCell('Title', heading: true, themeData: themeData),
+              PaddedCell('Years', heading: true, themeData: themeData),
+              PaddedCell('', heading: true, themeData: themeData),
+            ],
+          ),
+          ...experience
+              .map(
+                (exp) => TableRow(
+                  children: [
+                    PaddedCell(exp.company, themeData: themeData),
+                    PaddedCell(exp.title, themeData: themeData),
+                    PaddedCell(formatDateRange(exp.from, exp.to),
+                        themeData: themeData),
+                    FlatButton(
+                      padding: EdgeInsets.all(1),
+                      child: Icon(
+                        Icons.remove,
+                      ),
+                      color: themeData.errorColor,
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              )
+              .toList(),
+        ]),
+        SizedBox(height: 10),
+      ],
+    );
+  }
+}
+
+class PaddedCell extends StatelessWidget {
+  const PaddedCell(
+    this.text, {
+    this.themeData,
+    this.heading = false,
+  });
+
+  final ThemeData themeData;
+  final String text;
+  final bool heading;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8),
+      child: Text(
+        text,
+        style: heading
+            ? themeData.textTheme.subtitle2
+                .copyWith(fontWeight: FontWeight.bold)
+            : themeData.textTheme.subtitle2,
+      ),
+    );
   }
 }
 
@@ -130,6 +207,49 @@ class EducationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log.v('build called');
-    return Center(child: Text('Education'));
+    final themeData = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Experience Credentials', style: themeData.textTheme.headline5),
+        SizedBox(height: 10),
+        Table(columnWidths: {
+          3: FixedColumnWidth(30)
+        }, children: [
+          TableRow(
+            decoration: BoxDecoration(
+              color: themeData.backgroundColor,
+            ),
+            children: [
+              PaddedCell('School', heading: true, themeData: themeData),
+              PaddedCell('Degree', heading: true, themeData: themeData),
+              PaddedCell('Years', heading: true, themeData: themeData),
+              PaddedCell('', heading: true, themeData: themeData),
+            ],
+          ),
+          ...education
+              .map(
+                (edu) => TableRow(
+                  children: [
+                    PaddedCell(edu.school, themeData: themeData),
+                    PaddedCell(edu.degree, themeData: themeData),
+                    PaddedCell(formatDateRange(edu.from, edu.to),
+                        themeData: themeData),
+                    FlatButton(
+                      padding: EdgeInsets.all(1),
+                      child: Icon(
+                        Icons.remove,
+                      ),
+                      color: themeData.errorColor,
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              )
+              .toList(),
+        ]),
+        SizedBox(height: 10),
+      ],
+    );
   }
 }

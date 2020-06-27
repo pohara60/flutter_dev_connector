@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_dev_connector/utils/date_format.dart';
 
 class ProfileEducationWidget extends StatelessWidget {
   final List<Education> education;
@@ -12,7 +12,6 @@ class ProfileEducationWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
-    final dateFormatter = DateFormat('yyyy/MM/dd');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -34,11 +33,7 @@ class ProfileEducationWidget extends StatelessWidget {
                     .copyWith(fontWeight: FontWeight.bold),
               ),
               SizedBox(height: 4),
-              Text(dateFormatter.format(education[index].from) +
-                  ' - ' +
-                  (education[index].to == null
-                      ? 'Now'
-                      : dateFormatter.format(education[index].to))),
+              Text(formatDateRange(education[index].from, education[index].to)),
               SizedBox(height: 4),
               Row(
                 children: [
