@@ -4,15 +4,29 @@ import 'package:flutter_dev_connector/models/user.dart';
 // flutter pub run build_runner build
 part 'profile.g.dart';
 
+User _userFromJson(dynamic user) {
+  if (user == null) return null;
+  if (user is String) {
+    // API sometime just returns userId!
+    return User(id: user);
+  }
+  return User.fromJson(user as Map<String, dynamic>);
+}
+
+// API takes string as input, returns list of stricngs as output!
+String _skillsToJson(List<String> skills) => skills.join(',');
+
 @JsonSerializable()
 class Profile {
   @JsonKey(name: '_id')
   String id;
+  @JsonKey(fromJson: _userFromJson)
   User user;
   String company;
   String website;
   String location;
   String status;
+  @JsonKey(toJson: _skillsToJson)
   List<String> skills;
   String bio;
   String githubusername;

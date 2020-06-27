@@ -60,8 +60,6 @@ class _AuthCardState extends State<AuthCard>
   var _isLoading = false;
   final _passwordController = TextEditingController();
   AnimationController _controller;
-  Animation<Offset> _slideAnimation;
-  Animation<double> _opacityAnimation;
 
   @override
   void initState() {
@@ -70,15 +68,6 @@ class _AuthCardState extends State<AuthCard>
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 300),
-    );
-    _slideAnimation = Tween<Offset>(
-      begin: Offset(0, -1.5),
-      end: Offset(0, 0),
-    ).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn),
-    );
-    _opacityAnimation = Tween(begin: 0.0, end: 1.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeIn),
     );
   }
 

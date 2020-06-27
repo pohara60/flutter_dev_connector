@@ -141,18 +141,42 @@ class ProfileService with ChangeNotifier {
     _authService = authService;
     User user = authService.user;
 
-    if (_profile != null && user?.id != _profile.user.id) {
+    if (_profile != null && user?.id != _profile.user?.id) {
       // Clear current user profile
       _profile = null;
       notifyListeners();
     }
   }
 
-  addProfile(Profile profile) {
-    _log.v('addProfile');
-  }
-
-  updateProfile(String id, Profile profile) {
+  Future<Profile> updateProfile(Profile profile) async {
     _log.v('updateProfile');
+    try {
+      _isLoading = true;
+      final headers = _authService?.getAuthHeader();
+      final body = jsonEncode(profile.toJson());
+      final res = await http.post(
+        "$BASE_URL/api/profile",
+        body: body,
+        headers: {...headers, "Content-Type": "application/json"},
+      );
+      if (res.statusCode == 200) {
+        _profile = Profile.fromJson(jsonDecode(res.body));
+      } else {
+        throw HttpException(jsonDecode(res.body)['msg']);
+      }
+      _isLoading = false;
+    } catch (err) {
+      _error = {
+        'msg': err.toString(),
+        // 'msg': err.response.statusText,
+        // 'status': err.response.status,
+      };
+      _profile = null;
+      _isLoading = false;
+      rethrow;
+    }
+    // Do not notifyListeners because not required
+    //notifyListeners();
+    return profile;
   }
 }

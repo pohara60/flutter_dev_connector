@@ -3,7 +3,6 @@ import 'package:flutter_dev_connector/models/profile.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
-import 'package:flutter_dev_connector/views/profile_detail_view.dart';
 import 'package:flutter_dev_connector/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 
@@ -55,9 +54,10 @@ class DashboardView extends StatelessWidget {
                       Text(
                           'You have not yet setup a profile, please add some info'),
                       RaisedButton(
-                        child: Text('Create Profile'),
+                        child: Text('Create Profile',
+                            style: themeData.accentTextTheme.button),
                         color: themeData.accentColor,
-                        textColor: Colors.white,
+                        //textColor: Colors.white,
                         onPressed: () {
                           Navigator.of(context).pushNamed('/create-profile');
                         },
@@ -94,7 +94,17 @@ class DashboardActionsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log.v('build called');
-    return Center(child: Text('DashboardActions'));
+    return Row(
+      children: [
+        FlatButton.icon(
+          onPressed: () {
+            Navigator.of(context).pushNamed('/edit-profile');
+          },
+          icon: Icon(Icons.person),
+          label: Text('Edit Profile'),
+        ),
+      ],
+    );
   }
 }
 

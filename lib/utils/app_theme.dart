@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 ThemeData getAppTheme(BuildContext context) {
-  final textTheme = Theme.of(context).textTheme;
+  final theme = Theme.of(context);
+  final textTheme = theme.textTheme;
+  final accentTextTheme = theme.accentTextTheme;
   final accentColor = Colors.cyan[400];
 
   final themeData = ThemeData(
@@ -14,6 +16,9 @@ ThemeData getAppTheme(BuildContext context) {
       headline3: textTheme.headline3.copyWith(color: accentColor),
       headline4: textTheme.headline4.copyWith(color: accentColor),
       headline5: textTheme.headline5.copyWith(color: accentColor),
+    ),
+    accentTextTheme: GoogleFonts.ralewayTextTheme(accentTextTheme).copyWith(
+      button: accentTextTheme.button.copyWith(color: Colors.white),
     ),
   );
   return themeData;

@@ -62,7 +62,7 @@ class ProfileGithubWidget extends StatelessWidget {
                           color: Theme.of(context).accentColor,
                           text: Text(
                             'Stars: ${repos[index].stargazersCount}',
-                            style: TextStyle(color: Colors.white),
+                            style: themeData.accentTextTheme.button,
                           ),
                         ),
                         CountBox(

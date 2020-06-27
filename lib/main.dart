@@ -4,10 +4,10 @@ import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/app_theme.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
 import 'package:flutter_dev_connector/views/auth_screen.dart';
-import 'package:flutter_dev_connector/views/create_profile_view.dart';
 import 'package:flutter_dev_connector/views/dashboard_view.dart';
 import 'package:flutter_dev_connector/views/profile_list_view.dart';
 import 'package:flutter_dev_connector/views/splash_screen.dart';
+import 'package:flutter_dev_connector/views/update_profile_view.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -56,7 +56,10 @@ class DevConnectorApp extends StatelessWidget {
           routes: {
             DashboardView.routeName: (ctx) => ifAuth(DashboardView()),
             ProfileListView.routeName: (ctx) => ProfileListView(),
-            CreateProfileView.routeName: (ctx) => ifAuth(CreateProfileView()),
+            UpdateProfileView.createRouteName: (ctx) =>
+                ifAuth(UpdateProfileView()),
+            UpdateProfileView.editRouteName: (ctx) =>
+                ifAuth(UpdateProfileView(true)),
           },
         );
       }),
