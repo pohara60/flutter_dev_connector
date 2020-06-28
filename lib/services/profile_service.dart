@@ -179,4 +179,8 @@ class ProfileService with ChangeNotifier {
     //notifyListeners();
     return profile;
   }
+
+  addExperience(Experience experience) {
+    _log.v('addExperience');
+  }
 }

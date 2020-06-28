@@ -5,6 +5,7 @@ import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/date_format.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
 import 'package:flutter_dev_connector/widgets/app_drawer.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class DashboardView extends StatelessWidget {
@@ -129,7 +130,19 @@ class ExperienceWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Experience Credentials', style: themeData.textTheme.headline5),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Experience', style: themeData.textTheme.headline5),
+            FlatButton.icon(
+              onPressed: () {
+                Navigator.of(context).pushNamed('/add-experience');
+              },
+              icon: Icon(FontAwesomeIcons.blackTie),
+              label: Text('Add Experience'),
+            ),
+          ],
+        ),
         SizedBox(height: 10),
         Table(columnWidths: {
           3: FixedColumnWidth(30)
@@ -211,7 +224,19 @@ class EducationWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Experience Credentials', style: themeData.textTheme.headline5),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Education', style: themeData.textTheme.headline5),
+            FlatButton.icon(
+              onPressed: () {
+                Navigator.of(context).pushNamed('/add-education');
+              },
+              icon: Icon(FontAwesomeIcons.graduationCap),
+              label: Text('Add Education'),
+            ),
+          ],
+        ),
         SizedBox(height: 10),
         Table(columnWidths: {
           3: FixedColumnWidth(30)

@@ -3,6 +3,8 @@ import 'package:flutter_dev_connector/services/auth_service.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/app_theme.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
+import 'package:flutter_dev_connector/views/add_education.dart';
+import 'package:flutter_dev_connector/views/add_experience.dart';
 import 'package:flutter_dev_connector/views/auth_screen.dart';
 import 'package:flutter_dev_connector/views/dashboard_view.dart';
 import 'package:flutter_dev_connector/views/profile_list_view.dart';
@@ -60,6 +62,8 @@ class DevConnectorApp extends StatelessWidget {
                 ifAuth(UpdateProfileView()),
             UpdateProfileView.editRouteName: (ctx) =>
                 ifAuth(UpdateProfileView(true)),
+            AddExperienceView.routeName: (ctx) => ifAuth(AddExperienceView()),
+            AddEducationView.routeName: (ctx) => ifAuth(AddEducationView()),
           },
         );
       }),

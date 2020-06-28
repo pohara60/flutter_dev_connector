@@ -8,3 +8,8 @@ DateFormat getDateFormat() => _DateFormat.ymdDateFormat;
 
 String formatDateRange(from, to) =>
     '${_DateFormat.ymdDateFormat.format(from)} - ${to == null ? "Now" : _DateFormat.ymdDateFormat.format(to)}';
+
+DateTime getToday() {
+  final now = DateTime.now();
+  return DateTime(now.year, now.month, now.day);
+}
