@@ -24,7 +24,6 @@ class _AddExperienceViewState extends State<AddExperienceView> {
   final _fromFocusNode = FocusNode();
   final _toFocusNode = FocusNode();
   final _descriptionFocusNode = FocusNode();
-  final _fromController = TextEditingController();
 
   var _doneInit = false;
   Experience experience;
@@ -83,8 +82,6 @@ class _AddExperienceViewState extends State<AddExperienceView> {
 
     final themeData = Theme.of(context);
     final dateFormat = getDateFormat();
-    _fromController.text = dateFormat.format(experience.from);
-    _log.v('build - _fromController.text=${_fromController.text}');
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Experience'),
@@ -205,15 +202,4 @@ class _AddExperienceViewState extends State<AddExperienceView> {
       ),
     );
   }
-}
-
-Future<DateTime> _selectDate(BuildContext context, DateTime initial) async {
-  final DateTime d = await showDatePicker(
-    //we wait for the dialog to return
-    context: context,
-    initialDate: initial ?? getToday(),
-    firstDate: DateTime(1970),
-    lastDate: getToday(),
-  );
-  return d;
 }

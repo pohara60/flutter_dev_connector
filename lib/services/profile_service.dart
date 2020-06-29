@@ -180,14 +180,13 @@ class ProfileService with ChangeNotifier {
     return profile;
   }
 
-  Future<void> addExperience(Experience experience) async {
-    _log.v('addExperience');
+  Future<void> _addExperienceEducation(String type, String body) async {
+    _log.v('_addExperienceEducation');
     try {
       _isLoading = true;
       final headers = _authService?.getAuthHeader();
-      final body = jsonEncode(experience.toJson());
       final res = await http.put(
-        "$BASE_URL/api/profile/experience",
+        "$BASE_URL/api/profile/$type",
         body: body,
         headers: {...headers, "Content-Type": "application/json"},
       );
@@ -216,5 +215,16 @@ class ProfileService with ChangeNotifier {
       rethrow;
     }
     notifyListeners();
+  }
+
+  Future<void> addExperience(Experience experience) {
+    _log.v('addExperience');
+    return _addExperienceEducation(
+        'experience', jsonEncode(experience.toJson()));
+  }
+
+  Future<void> addEducation(Education education) {
+    _log.v('addEducation');
+    return _addExperienceEducation('education', jsonEncode(education.toJson()));
   }
 }

@@ -92,7 +92,12 @@ class _TextFieldFormDatePicker extends State<TextFormFieldDatePicker> {
               }
             },
             onSaved: (value) {
-              final date = widget.dateFormat.parseLoose(value);
+              DateTime date;
+              try {
+                if (value != '') {
+                  date = widget.dateFormat.parseLoose(value);
+                }
+              } catch (err) {}
               widget.onSaved(date);
             },
           ),
