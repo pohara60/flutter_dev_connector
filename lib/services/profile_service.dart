@@ -227,4 +227,48 @@ class ProfileService with ChangeNotifier {
     _log.v('addEducation');
     return _addExperienceEducation('education', jsonEncode(education.toJson()));
   }
+
+  Future<void> _deleteExperienceEducation(String type, String id) async {
+    _log.v('_deleteExperienceEducation');
+    try {
+      _isLoading = true;
+      final headers = _authService?.getAuthHeader();
+      final res = await http.delete(
+        "$BASE_URL/api/profile/$type/$id",
+        headers: headers,
+      );
+      if (res.statusCode == 200) {
+        _profile = Profile.fromJson(jsonDecode(res.body));
+      } else {
+        final response = jsonDecode(res.body) as Map<String, dynamic>;
+        String msg = 'Unknown error!';
+        if (response.containsKey('errors')) {
+          final errors = response['errors'] as List<dynamic>;
+          msg = errors.map((err) => err['msg']).join('\n');
+        } else if (response.containsKey('msg')) {
+          msg = response['msg'];
+        }
+        throw HttpException(msg);
+      }
+      _isLoading = false;
+    } catch (err) {
+      _error = {
+        'msg': err.toString(),
+      };
+      _profile = null;
+      _isLoading = false;
+      rethrow;
+    }
+    notifyListeners();
+  }
+
+  Future<void> deleteExperience(Experience experience) {
+    _log.v('deleteExperience');
+    return _deleteExperienceEducation('experience', experience.id);
+  }
+
+  Future<void> deleteEducation(Education education) {
+    _log.v('deleteEducation');
+    return _deleteExperienceEducation('education', education.id);
+  }
 }

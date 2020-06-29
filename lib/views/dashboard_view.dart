@@ -172,7 +172,10 @@ class ExperienceWidget extends StatelessWidget {
                         Icons.remove,
                       ),
                       color: themeData.errorColor,
-                      onPressed: () {},
+                      onPressed: () async {
+                        Provider.of<ProfileService>(context, listen: false)
+                            .deleteExperience(exp);
+                      },
                     ),
                   ],
                 ),
@@ -266,7 +269,10 @@ class EducationWidget extends StatelessWidget {
                         Icons.remove,
                       ),
                       color: themeData.errorColor,
-                      onPressed: () {},
+                      onPressed: () async {
+                        Provider.of<ProfileService>(context, listen: false)
+                            .deleteEducation(edu);
+                      },
                     ),
                   ],
                 ),
