@@ -3,6 +3,7 @@ import 'package:flutter_dev_connector/models/profile.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/date_format.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
+import 'package:flutter_dev_connector/widgets/checkbox_form_field.dart';
 import 'package:flutter_dev_connector/widgets/text_form_field_date_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -55,7 +56,7 @@ class _AddExperienceViewState extends State<AddExperienceView> {
 
     _form.currentState.save();
     try {
-      experience = await Provider.of<ProfileService>(context, listen: false)
+      await Provider.of<ProfileService>(context, listen: false)
           .addExperience(experience);
       Navigator.of(context).pop();
     } catch (error) {
@@ -114,8 +115,9 @@ class _AddExperienceViewState extends State<AddExperienceView> {
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (value) =>
                       FocusScope.of(context).requestFocus(_companyFocusNode),
-                  validator: (value) => null,
-                  onSaved: (value) => experience.title = value,
+                  validator: (value) =>
+                      value == '' ? 'Title is required!' : null,
+                  onSaved: (value) => experience.title = value.trim(),
                 ),
                 TextFormField(
                   initialValue: experience.company,
@@ -127,8 +129,9 @@ class _AddExperienceViewState extends State<AddExperienceView> {
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (value) =>
                       FocusScope.of(context).requestFocus(_locationFocusNode),
-                  validator: (value) => null,
-                  onSaved: (value) => experience.company = value,
+                  validator: (value) =>
+                      value == '' ? 'Company is required!' : null,
+                  onSaved: (value) => experience.company = value.trim(),
                 ),
                 TextFormField(
                   initialValue: experience.location,
@@ -141,62 +144,41 @@ class _AddExperienceViewState extends State<AddExperienceView> {
                   onFieldSubmitted: (value) =>
                       FocusScope.of(context).requestFocus(_fromFocusNode),
                   validator: (value) => null,
-                  onSaved: (value) => experience.location = value,
+                  onSaved: (value) => experience.location = value.trim(),
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        controller: _fromController,
-                        //initialValue: dateFormat.format(experience.from),
-                        keyboardType: TextInputType.datetime,
-                        decoration: InputDecoration(
-                          labelText: "From",
-                          hintText: "",
-                        ),
-                        focusNode: _fromFocusNode,
-                        textInputAction: TextInputAction.next,
-                        onFieldSubmitted: (value) =>
-                            FocusScope.of(context).requestFocus(_toFocusNode),
-                        validator: (value) {
-                          try {
-                            final date = dateFormat.parseLoose(value);
-                            return null;
-                          } catch (err) {
-                            return 'Invalid date!';
-                          }
-                        },
-                        onSaved: (value) =>
-                            experience.from = dateFormat.parseLoose(value),
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.calendar_today),
-                      onPressed: () async {
-                        try {
-                          experience.from =
-                              dateFormat.parseLoose(_fromController.text);
-                        } catch (err) {}
-                        final date =
-                            await _selectDate(context, experience.from);
-                        if (date != null) {
-                          setState(() {
-                            experience.from = date;
-                          });
-                        }
-                      },
-                    ),
-                  ],
+                TextFormFieldDatePicker(
+                  labelText: "From",
+                  focusNode: _fromFocusNode,
+                  nextFocusNode: _toFocusNode,
+                  dateFormat: dateFormat,
+                  initialDate: experience.from ?? getToday(),
+                  lastDate: getToday(),
+                  firstDate: DateTime(1970),
+                  onSaved: (date) => experience.from = date,
+                  validator: (date) {
+                    if (date == null) return 'From date required!';
+                    return null;
+                  },
+                ),
+                CheckboxFormField(
+                  context: context,
+                  initialValue: experience.current ?? false,
+                  title: Text('Current'),
+                  onSaved: (checked) => experience.current = checked,
+                  validator: (checked) => null,
                 ),
                 TextFormFieldDatePicker(
                   labelText: "To",
                   focusNode: _toFocusNode,
+                  nextFocusNode: _descriptionFocusNode,
                   dateFormat: dateFormat,
-                  initialDate: experience.to ?? getToday(),
+                  initialDate: experience.to ?? experience.from ?? getToday(),
                   lastDate: getToday(),
                   firstDate: DateTime(1970),
                   onSaved: (date) => experience.to = date,
+                  validator: (date) {
+                    return null;
+                  },
                 ),
                 TextFormField(
                   initialValue: experience.description,
@@ -208,7 +190,7 @@ class _AddExperienceViewState extends State<AddExperienceView> {
                   textInputAction: TextInputAction.done,
                   onFieldSubmitted: (value) => _saveForm(),
                   validator: (value) => null,
-                  onSaved: (value) => experience.description = value,
+                  onSaved: (value) => experience.description = value.trim(),
                 ),
                 RaisedButton(
                   child:

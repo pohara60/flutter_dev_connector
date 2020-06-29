@@ -180,7 +180,41 @@ class ProfileService with ChangeNotifier {
     return profile;
   }
 
-  addExperience(Experience experience) {
+  Future<void> addExperience(Experience experience) async {
     _log.v('addExperience');
+    try {
+      _isLoading = true;
+      final headers = _authService?.getAuthHeader();
+      final body = jsonEncode(experience.toJson());
+      final res = await http.put(
+        "$BASE_URL/api/profile/experience",
+        body: body,
+        headers: {...headers, "Content-Type": "application/json"},
+      );
+      if (res.statusCode == 200) {
+        _profile = Profile.fromJson(jsonDecode(res.body));
+      } else {
+        final response = jsonDecode(res.body) as Map<String, dynamic>;
+        String msg = 'Unknown error!';
+        if (response.containsKey('errors')) {
+          final errors = response['errors'] as List<dynamic>;
+          msg = errors.map((err) => err['msg']).join('\n');
+        } else if (response.containsKey('msg')) {
+          msg = response['msg'];
+        }
+        throw HttpException(msg);
+      }
+      _isLoading = false;
+    } catch (err) {
+      _error = {
+        'msg': err.toString(),
+        // 'msg': err.response.statusText,
+        // 'status': err.response.status,
+      };
+      _profile = null;
+      _isLoading = false;
+      rethrow;
+    }
+    notifyListeners();
   }
 }

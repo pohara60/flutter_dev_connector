@@ -44,14 +44,14 @@ class ProfileListTileView extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     return ListTile(
-      leading: profile.user.avatar == null
+      leading: profile.user?.avatar == null
           ? null
           : CircleAvatar(
               backgroundImage: NetworkImage("http:" + profile.user.avatar),
               // backgroundColor: Colors.transparent,
             ),
       title: Text(
-        profile.user.name,
+        profile.user?.name,
         style: themeData.textTheme.headline6,
       ),
       subtitle: Text(

@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TextFormFieldDatePicker extends StatefulWidget {
-  final ValueChanged<DateTime> onSaved;
+  final FormFieldSetter<DateTime> onSaved;
+  final FormFieldValidator<DateTime> validator;
   final DateTime initialDate;
   final DateTime firstDate;
   final DateTime lastDate;
   final DateFormat dateFormat;
   final FocusNode focusNode;
+  final FocusNode nextFocusNode;
   final String labelText;
 
   TextFormFieldDatePicker({
     Key key,
     this.labelText,
     this.focusNode,
+    this.nextFocusNode,
     this.dateFormat,
+    this.validator,
     @required this.lastDate,
     @required this.firstDate,
     @required this.initialDate,
@@ -69,9 +73,19 @@ class _TextFieldFormDatePicker extends State<TextFormFieldDatePicker> {
             decoration: InputDecoration(
               labelText: widget.labelText,
             ),
+            textInputAction: widget.nextFocusNode != null
+                ? TextInputAction.next
+                : TextInputAction.none,
+            onFieldSubmitted: (value) {
+              if (widget.nextFocusNode != null) {
+                FocusScope.of(context).requestFocus(widget.nextFocusNode);
+              }
+            },
             validator: (value) {
               try {
+                if (value == '') return null;
                 final date = widget.dateFormat.parseLoose(value);
+                if (widget.validator != null) return widget.validator(date);
                 return null;
               } catch (err) {
                 return 'Invalid date!';
@@ -123,8 +137,8 @@ class _TextFieldFormDatePicker extends State<TextFormFieldDatePicker> {
       _controllerDate.text = _dateFormat.format(_selectedDate);
     }
 
-    if (widget.focusNode != null) {
-      widget.focusNode.nextFocus();
+    if (widget.nextFocusNode != null) {
+      widget.nextFocusNode.requestFocus();
     }
   }
 }

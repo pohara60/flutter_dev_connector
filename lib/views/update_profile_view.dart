@@ -193,7 +193,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                   onFieldSubmitted: (value) =>
                       FocusScope.of(context).requestFocus(_websiteFocusNode),
                   validator: (value) => null,
-                  onSaved: (value) => _profile.company = value,
+                  onSaved: (value) => _profile.company = value.trim(),
                 ),
                 TextFormField(
                   initialValue: _profile.website,
@@ -206,7 +206,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                   onFieldSubmitted: (value) =>
                       FocusScope.of(context).requestFocus(_locationFocusNode),
                   validator: (value) => null,
-                  onSaved: (value) => _profile.website = value,
+                  onSaved: (value) => _profile.website = value.trim(),
                 ),
                 TextFormField(
                   initialValue: _profile.location,
@@ -219,7 +219,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                   onFieldSubmitted: (value) =>
                       FocusScope.of(context).requestFocus(_skillsFocusNode),
                   validator: (value) => null,
-                  onSaved: (value) => _profile.location = value,
+                  onSaved: (value) => _profile.location = value.trim(),
                 ),
                 TextFormField(
                   initialValue: _profile.skills?.join(','),
@@ -234,7 +234,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                       FocusScope.of(context).requestFocus(_githubFocusNode),
                   validator: (value) =>
                       value == '' ? 'Please enter skills!' : null,
-                  onSaved: (value) => _profile.skills = value.split(','),
+                  onSaved: (value) => _profile.skills = value.trim().split(','),
                 ),
                 TextFormField(
                   initialValue: _profile.githubusername,
@@ -248,7 +248,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                   onFieldSubmitted: (value) =>
                       FocusScope.of(context).requestFocus(_bioFocusNode),
                   validator: (value) => null,
-                  onSaved: (value) => _profile.githubusername = value,
+                  onSaved: (value) => _profile.githubusername = value.trim(),
                 ),
                 TextFormField(
                   initialValue: _profile.bio,
@@ -260,7 +260,7 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
                   textInputAction: TextInputAction.done,
                   onFieldSubmitted: (value) => _saveForm(),
                   validator: (value) => null,
-                  onSaved: (value) => _profile.bio = value,
+                  onSaved: (value) => _profile.bio = value.trim(),
                 ),
                 FlatButton(
                   child: Text('Add Social Network Links'),

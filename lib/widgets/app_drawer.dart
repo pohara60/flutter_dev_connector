@@ -35,15 +35,20 @@ class AppDrawer extends StatelessWidget {
           // ),
 //          SizedBox(height: 20),
           buildListTile(
-            'Developers',
-            Icons.developer_mode,
+            'Dashboard',
+            Icons.person,
             () => Navigator.of(context).pushReplacementNamed('/'),
           ),
+          buildListTile(
+            'Developers',
+            Icons.developer_mode,
+            () => Navigator.of(context).pushReplacementNamed('/profiles'),
+          ),
           buildListTile('Register', FontAwesomeIcons.pencilAlt, () {
-            Navigator.of(context).pushReplacementNamed('/');
+            Navigator.of(context).pushReplacementNamed('/signup');
           }),
           buildListTile('Login', FontAwesomeIcons.signInAlt, () {
-            Navigator.of(context).pushReplacementNamed('/');
+            Navigator.of(context).pushReplacementNamed('/login');
           }),
           buildListTile('Logout', FontAwesomeIcons.signOutAlt, () {
             // Navigator.of(context).pop();

@@ -62,6 +62,8 @@ class DevConnectorApp extends StatelessWidget {
                 ifAuth(UpdateProfileView()),
             UpdateProfileView.editRouteName: (ctx) =>
                 ifAuth(UpdateProfileView(true)),
+            AuthScreen.loginRouteName: (ctx) => ifAuth(AuthScreen()),
+            AuthScreen.signupRouteName: (ctx) => ifAuth(AuthScreen(true)),
             AddExperienceView.routeName: (ctx) => ifAuth(AddExperienceView()),
             AddEducationView.routeName: (ctx) => ifAuth(AddEducationView()),
           },
