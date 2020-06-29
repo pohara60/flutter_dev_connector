@@ -3,7 +3,7 @@ import 'package:flutter_dev_connector/models/profile.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/date_format.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
-import 'package:flutter_dev_connector/widgets/text_field_date_picker.dart';
+import 'package:flutter_dev_connector/widgets/text_form_field_date_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddExperienceView extends StatefulWidget {
@@ -189,15 +189,14 @@ class _AddExperienceViewState extends State<AddExperienceView> {
                     ),
                   ],
                 ),
-                TextFieldDatePicker(
+                TextFormFieldDatePicker(
                   labelText: "To",
-                  suffixIcon: Icon(Icons.calendar_today),
                   focusNode: _toFocusNode,
                   dateFormat: dateFormat,
                   initialDate: experience.to ?? getToday(),
                   lastDate: getToday(),
                   firstDate: DateTime(1970),
-                  onDateChanged: (date) => experience.to = date,
+                  onSaved: (date) => experience.to = date,
                 ),
                 TextFormField(
                   initialValue: experience.description,

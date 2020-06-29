@@ -1,28 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class TextFieldDatePicker extends StatefulWidget {
-  final ValueChanged<DateTime> onDateChanged;
+class TextFormFieldDatePicker extends StatefulWidget {
+  final ValueChanged<DateTime> onSaved;
   final DateTime initialDate;
   final DateTime firstDate;
   final DateTime lastDate;
   final DateFormat dateFormat;
   final FocusNode focusNode;
   final String labelText;
-  final Icon prefixIcon;
-  final Icon suffixIcon;
 
-  TextFieldDatePicker({
+  TextFormFieldDatePicker({
     Key key,
     this.labelText,
-    this.prefixIcon,
-    this.suffixIcon,
     this.focusNode,
     this.dateFormat,
     @required this.lastDate,
     @required this.firstDate,
     @required this.initialDate,
-    @required this.onDateChanged,
+    @required this.onSaved,
   })  : assert(initialDate != null),
         assert(firstDate != null),
         assert(lastDate != null),
@@ -32,14 +28,14 @@ class TextFieldDatePicker extends StatefulWidget {
             'initialDate must be on or before lastDate'),
         assert(!firstDate.isAfter(lastDate),
             'lastDate must be on or after firstDate'),
-        assert(onDateChanged != null, 'onDateChanged must not be null'),
+        assert(onSaved != null, 'onSaved must not be null'),
         super(key: key);
 
   @override
-  _MyTextFieldDatePicker createState() => _MyTextFieldDatePicker();
+  _TextFieldFormDatePicker createState() => _TextFieldFormDatePicker();
 }
 
-class _MyTextFieldDatePicker extends State<TextFieldDatePicker> {
+class _TextFieldFormDatePicker extends State<TextFormFieldDatePicker> {
   TextEditingController _controllerDate;
   DateFormat _dateFormat;
   DateTime _selectedDate;
@@ -51,7 +47,7 @@ class _MyTextFieldDatePicker extends State<TextFieldDatePicker> {
     if (widget.dateFormat != null) {
       _dateFormat = widget.dateFormat;
     } else {
-      _dateFormat = DateFormat.MMMEd();
+      _dateFormat = DateFormat.yMMMd();
     }
 
     _selectedDate = widget.initialDate;
@@ -62,16 +58,49 @@ class _MyTextFieldDatePicker extends State<TextFieldDatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      focusNode: widget.focusNode,
-      controller: _controllerDate,
-      decoration: InputDecoration(
-        prefixIcon: widget.prefixIcon,
-        suffixIcon: widget.suffixIcon,
-        labelText: widget.labelText,
-      ),
-      onTap: () => _selectDate(context),
-      readOnly: false,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Expanded(
+          child: TextFormField(
+            focusNode: widget.focusNode,
+            controller: _controllerDate,
+            keyboardType: TextInputType.datetime,
+            decoration: InputDecoration(
+              labelText: widget.labelText,
+            ),
+            validator: (value) {
+              try {
+                final date = widget.dateFormat.parseLoose(value);
+                return null;
+              } catch (err) {
+                return 'Invalid date!';
+              }
+            },
+            onSaved: (value) {
+              final date = widget.dateFormat.parseLoose(value);
+              widget.onSaved(date);
+            },
+          ),
+        ),
+        IconButton(
+          icon: Icon(Icons.calendar_today),
+          onPressed: () async {
+            DateTime date;
+            try {
+              date = widget.dateFormat.parseLoose(_controllerDate.text);
+              _selectedDate = date;
+            } catch (err) {}
+            date = await _selectDate(context);
+            if (date != null) {
+              setState(() {
+                _selectedDate = date;
+                _controllerDate.text = widget.dateFormat.format(_selectedDate);
+              });
+            }
+          },
+        ),
+      ],
     );
   }
 
@@ -92,7 +121,6 @@ class _MyTextFieldDatePicker extends State<TextFieldDatePicker> {
     if (pickedDate != null && pickedDate != _selectedDate) {
       _selectedDate = pickedDate;
       _controllerDate.text = _dateFormat.format(_selectedDate);
-      widget.onDateChanged(_selectedDate);
     }
 
     if (widget.focusNode != null) {
