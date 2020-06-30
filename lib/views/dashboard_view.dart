@@ -81,7 +81,32 @@ class DashboardView extends StatelessWidget {
                               icon: Icon(Icons.remove),
                               color: themeData.errorColor,
                               label: Text('Delete My Account'),
-                              onPressed: () {},
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (ctx) => AlertDialog(
+                                    title: Text(
+                                        'Are you sure? This cannot be undone!'),
+                                    content: Text(
+                                        'Do you want to delete ypur Account?'),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        child: Text('No'),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(false),
+                                      ),
+                                      FlatButton(
+                                          child: Text('Yes'),
+                                          onPressed: () async {
+                                            await profileService
+                                                .deleteAccount();
+//             dispatch(setAlert("Your account has been permanently deleted"));
+                                            Navigator.of(context).pop(true);
+                                          }),
+                                    ],
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),

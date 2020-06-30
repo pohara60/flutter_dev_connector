@@ -271,4 +271,40 @@ class ProfileService with ChangeNotifier {
     _log.v('deleteEducation');
     return _deleteExperienceEducation('education', education.id);
   }
+
+  Future<void> deleteAccount() async {
+//             await http.delete(`/api/profile`);
+//             dispatch({ type: CLEAR_PROFILE });
+//             dispatch({ type: ACCOUNT_DELETED });
+    _log.v('deleteAccount');
+    try {
+      _isLoading = true;
+      final headers = _authService?.getAuthHeader();
+      final res = await http.delete(
+        "$BASE_URL/api/profile",
+        headers: headers,
+      );
+      if (res.statusCode != 200) {
+        final response = jsonDecode(res.body) as Map<String, dynamic>;
+        String msg = 'Unknown error!';
+        if (response.containsKey('errors')) {
+          final errors = response['errors'] as List<dynamic>;
+          msg = errors.map((err) => err['msg']).join('\n');
+        } else if (response.containsKey('msg')) {
+          msg = response['msg'];
+        }
+        throw HttpException(msg);
+      }
+      await _authService.logout();
+      _profile = null;
+      _isLoading = false;
+    } catch (err) {
+      _error = {
+        'msg': err.toString(),
+      };
+      _isLoading = false;
+      rethrow;
+    }
+    notifyListeners();
+  }
 }
