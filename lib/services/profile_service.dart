@@ -176,7 +176,7 @@ class ProfileService with ChangeNotifier {
       rethrow;
     }
     // Do not notifyListeners because not required
-    //notifyListeners();
+    notifyListeners();
     return profile;
   }
 

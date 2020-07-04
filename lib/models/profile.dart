@@ -35,6 +35,18 @@ class Profile {
   Social social;
   DateTime date;
 
+  static const statusOptions = [
+    "Developer",
+    "Junior Developer",
+    "Senior Developer",
+    "Manager",
+    "Student or Learning",
+    "Instructor or Teacher",
+    "Intern",
+    "Retired",
+    "Other"
+  ];
+
   Profile({
     this.id,
     this.user,

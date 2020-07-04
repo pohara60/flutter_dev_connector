@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dev_connector/models/alert.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
+import 'package:flutter_dev_connector/services/alert_service.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/date_format.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
+import 'package:flutter_dev_connector/widgets/alert_widget.dart';
 import 'package:flutter_dev_connector/widgets/app_drawer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +38,7 @@ class DashboardView extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                AlertWidget(),
                 Text('Dashboard', style: themeData.textTheme.headline3),
                 SizedBox(
                   height: 10,
@@ -74,42 +78,9 @@ class DashboardView extends StatelessWidget {
                         DashboardActionsWidget(),
                         ExperienceWidget(profile.experience),
                         EducationWidget(profile.education),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            FlatButton.icon(
-                              icon: Icon(Icons.remove),
-                              color: themeData.errorColor,
-                              label: Text('Delete My Account'),
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (ctx) => AlertDialog(
-                                    title: Text(
-                                        'Are you sure? This cannot be undone!'),
-                                    content: Text(
-                                        'Do you want to delete ypur Account?'),
-                                    actions: <Widget>[
-                                      FlatButton(
-                                        child: Text('No'),
-                                        onPressed: () =>
-                                            Navigator.of(context).pop(false),
-                                      ),
-                                      FlatButton(
-                                          child: Text('Yes'),
-                                          onPressed: () async {
-                                            await profileService
-                                                .deleteAccount();
-//             dispatch(setAlert("Your account has been permanently deleted"));
-                                            Navigator.of(context).pop(true);
-                                          }),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
+                        DeleteAccountWidget(
+                            themeData: themeData,
+                            profileService: profileService),
                       ],
                     ),
                   ),
@@ -118,6 +89,55 @@ class DashboardView extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class DeleteAccountWidget extends StatelessWidget {
+  const DeleteAccountWidget({
+    Key key,
+    @required this.themeData,
+    @required this.profileService,
+  }) : super(key: key);
+
+  final ThemeData themeData;
+  final ProfileService profileService;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        FlatButton.icon(
+          icon: Icon(Icons.remove),
+          color: themeData.errorColor,
+          label: Text('Delete My Account'),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (ctx) => AlertDialog(
+                title: Text('Are you sure? This cannot be undone!'),
+                content: Text('Do you want to delete ypur Account?'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('No'),
+                    onPressed: () => Navigator.of(context).pop(false),
+                  ),
+                  FlatButton(
+                      child: Text('Yes'),
+                      onPressed: () async {
+                        await profileService.deleteAccount();
+                        Provider.of<AlertService>(context, listen: false)
+                            .addAlert(AlertType.Success,
+                                "Your account has been permanently deleted");
+                        Navigator.of(context).pop(true);
+                      }),
+                ],
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 }
@@ -200,6 +220,8 @@ class ExperienceWidget extends StatelessWidget {
                       onPressed: () async {
                         Provider.of<ProfileService>(context, listen: false)
                             .deleteExperience(exp);
+                        Provider.of<AlertService>(context, listen: false)
+                            .addAlert(AlertType.Success, "Experience deleted");
                       },
                     ),
                   ],
@@ -297,6 +319,8 @@ class EducationWidget extends StatelessWidget {
                       onPressed: () async {
                         Provider.of<ProfileService>(context, listen: false)
                             .deleteEducation(edu);
+                        Provider.of<AlertService>(context, listen: false)
+                            .addAlert(AlertType.Success, "Education deleted");
                       },
                     ),
                   ],

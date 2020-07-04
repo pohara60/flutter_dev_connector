@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dev_connector/config/config.dart';
+import 'package:flutter_dev_connector/models/alert.dart';
 import 'package:flutter_dev_connector/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,6 +26,18 @@ class AuthService with ChangeNotifier {
 
   bool get hasError {
     return error != null;
+  }
+
+  List<String> get errorMsgs {
+    List<String> msgs = [];
+    if (_error != null && _error.containsKey('errors')) {
+      for (var err in _error['errors']) {
+        if (err is Map && err.containsKey('msg')) {
+          msgs.add(err['msg']);
+        }
+      }
+    }
+    return msgs;
   }
 
   String get token {
@@ -208,7 +221,6 @@ class AuthService with ChangeNotifier {
     _token = null;
     _user = null;
     _expiryDate = null;
-    _error = null;
     if (_authTimer != null) {
       _authTimer.cancel();
     }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dev_connector/models/alert.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
+import 'package:flutter_dev_connector/services/alert_service.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
+import 'package:flutter_dev_connector/widgets/alert_widget.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -32,17 +35,6 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
   var _doneInit = false;
   Profile _profile;
   var _displaySocial = false;
-
-  static const _statusOptions = [
-    "Developer",
-    "Junior Developer",
-    "Senior Developer",
-    "Manager",
-    "Student or Learning",
-    "Instructor or Teacher",
-    "Intern",
-    "Other"
-  ];
 
   @override
   void dispose() {
@@ -117,6 +109,10 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
     try {
       _profile = await Provider.of<ProfileService>(context, listen: false)
           .updateProfile(_profile);
+      Provider.of<AlertService>(context, listen: false).addAlert(
+        AlertType.Success,
+        "Profile " + (widget._isUpdate ? "updated" : "created"),
+      );
       Navigator.of(context).pop();
     } catch (error) {
       await showDialog<Null>(
@@ -159,13 +155,14 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                AlertWidget(),
                 Text('${widget._isUpdate ? 'Edit' : 'Create'} Your Profile',
                     style: themeData.textTheme.headline5),
                 Text(
                     'Let\'s get some information to make your profile stand out',
                     style: themeData.textTheme.headline6),
                 DropdownButtonFormField(
-                  items: _statusOptions.map((String status) {
+                  items: Profile.statusOptions.map((String status) {
                     return new DropdownMenuItem(
                         value: status, child: Text(status));
                   }).toList(),

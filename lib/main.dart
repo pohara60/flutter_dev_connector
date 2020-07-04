@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dev_connector/services/alert_service.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/app_theme.dart';
@@ -25,14 +26,9 @@ class DevConnectorApp extends StatelessWidget {
         ChangeNotifierProvider<AuthService>(
           create: (ctx) => AuthService(),
         ),
-        // ChangeNotifierProxyProvider<Auth, Products>(
-        //   create: (ctx) => Products(),
-        //   update: (ctx, auth, products) => products
-        //     ..update(
-        //       auth.token,
-        //       auth.userId,
-        //     ),
-        // ),
+        ChangeNotifierProvider<AlertService>(
+          create: (ctx) => AlertService(),
+        ),
         ChangeNotifierProxyProvider<AuthService, ProfileService>(
           create: (ctx) => ProfileService(),
           update: (ctx, authService, profileService) =>
