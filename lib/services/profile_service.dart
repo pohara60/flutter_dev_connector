@@ -273,9 +273,6 @@ class ProfileService with ChangeNotifier {
   }
 
   Future<void> deleteAccount() async {
-//             await http.delete(`/api/profile`);
-//             dispatch({ type: CLEAR_PROFILE });
-//             dispatch({ type: ACCOUNT_DELETED });
     _log.v('deleteAccount');
     try {
       _isLoading = true;
