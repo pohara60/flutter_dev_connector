@@ -5,13 +5,7 @@ A Flutter version of the dev_connector client developed in [MERN Stack Front To 
 
 ## To Do
 
-* Tidy Up
-  * 
-* Add NavBar
-  * Improve Routes
-* Posts
-  * /posts
-  * /posts/:id
+* Improve Routes for Web URLs
 * Responsive UI
   * Mobile, Tablet, Desktop
   * Web features
@@ -31,6 +25,14 @@ A Flutter version of the dev_connector client developed in [MERN Stack Front To 
   * DELETE profile/experience/:id
   * DELETE profile/education/:id
 * Posts
+  * POST posts
+  * GET posts/:postId
+  * DELETE posts/:postId
+  * POST post/like/:postId
+  * POST post/unlike/:postId
+  * POST posts/comment/:postId
+  * DELETE posts/comment/:postId/:commentId
+  * 
 
 ## Development Getting Started
 
@@ -40,5 +42,5 @@ In order to generate JSON serializers:
 
 ## Running
 
-Requires server on http://192.168.1.159:5000.
+Requires server defined by BASE_URL=http://192.168.1.159:5000.
 
