@@ -164,11 +164,12 @@ class _AuthCardState extends State<AuthCard>
       final alertService = Provider.of<AlertService>(context, listen: false);
       if (authService.hasError) {
         for (var msg in authService.errorMsgs) {
-          alertService.addAlert(AlertType.Danger, msg);
+          alertService.addAlert(msg, AlertType.Danger);
         }
       } else {
-        alertService.addAlert(AlertType.Danger,
-            _authMode == AuthMode.Login ? 'Login failed!' : 'Signup failed!');
+        alertService.addAlert(
+            _authMode == AuthMode.Login ? 'Login failed!' : 'Signup failed!',
+            AlertType.Danger);
       }
     }
     setState(() {

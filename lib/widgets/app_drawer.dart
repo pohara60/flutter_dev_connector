@@ -44,6 +44,11 @@ class AppDrawer extends StatelessWidget {
             Icons.developer_mode,
             () => Navigator.of(context).pushReplacementNamed('/profiles'),
           ),
+          buildListTile(
+            'Posts',
+            Icons.email,
+            () => Navigator.of(context).pushReplacementNamed('/posts'),
+          ),
           buildListTile('Register', FontAwesomeIcons.pencilAlt, () {
             Navigator.of(context).pushReplacementNamed('/signup');
           }),

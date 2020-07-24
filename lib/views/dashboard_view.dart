@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dev_connector/models/alert.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
 import 'package:flutter_dev_connector/services/alert_service.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
@@ -128,7 +127,7 @@ class DeleteAccountWidget extends StatelessWidget {
                       onPressed: () async {
                         await profileService.deleteAccount();
                         Provider.of<AlertService>(context, listen: false)
-                            .addAlert(AlertType.Success,
+                            .addAlert(
                                 "Your account has been permanently deleted");
                         Navigator.of(context).pop(true);
                       }),
@@ -221,7 +220,7 @@ class ExperienceWidget extends StatelessWidget {
                         Provider.of<ProfileService>(context, listen: false)
                             .deleteExperience(exp);
                         Provider.of<AlertService>(context, listen: false)
-                            .addAlert(AlertType.Success, "Experience deleted");
+                            .addAlert("Experience deleted");
                       },
                     ),
                   ],
@@ -320,7 +319,7 @@ class EducationWidget extends StatelessWidget {
                         Provider.of<ProfileService>(context, listen: false)
                             .deleteEducation(edu);
                         Provider.of<AlertService>(context, listen: false)
-                            .addAlert(AlertType.Success, "Education deleted");
+                            .addAlert("Education deleted");
                       },
                     ),
                   ],

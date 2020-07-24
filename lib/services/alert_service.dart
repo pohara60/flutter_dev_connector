@@ -15,7 +15,7 @@ class AlertService with ChangeNotifier {
     return _alerts.length > 0;
   }
 
-  void addAlert(AlertType alertType, String msg) {
+  void addAlert(String msg, [AlertType alertType = AlertType.Success]) {
     _alerts.insert(0, Alert(alertType, msg));
     final duration = Duration(seconds: ALERT_DURATION);
     _alertExpiryTimes.insert(0, DateTime.now().add(duration));

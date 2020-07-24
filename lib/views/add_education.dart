@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dev_connector/models/alert.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
 import 'package:flutter_dev_connector/services/alert_service.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
@@ -60,7 +59,7 @@ class _AddEducationViewState extends State<AddEducationView> {
       await Provider.of<ProfileService>(context, listen: false)
           .addEducation(education);
       Provider.of<AlertService>(context, listen: false)
-          .addAlert(AlertType.Success, "Education added");
+          .addAlert("Education added");
       Navigator.of(context).pop();
     } catch (error) {
       await showDialog<Null>(

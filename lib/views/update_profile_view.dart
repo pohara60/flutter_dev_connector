@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dev_connector/models/alert.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
 import 'package:flutter_dev_connector/services/alert_service.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
@@ -110,7 +109,6 @@ class _UpdateProfileViewState extends State<UpdateProfileView> {
       _profile = await Provider.of<ProfileService>(context, listen: false)
           .updateProfile(_profile);
       Provider.of<AlertService>(context, listen: false).addAlert(
-        AlertType.Success,
         "Profile " + (widget._isUpdate ? "updated" : "created"),
       );
       Navigator.of(context).pop();
