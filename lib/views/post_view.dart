@@ -23,7 +23,6 @@ class PostView extends StatelessWidget {
       appBar: AppBar(
         title: Text('Dev Connector'),
       ),
-      drawer: AppDrawer(),
       body: FutureBuilder(
         future: postService.getPost(_postId),
         builder: (ctx, snapshot) {
