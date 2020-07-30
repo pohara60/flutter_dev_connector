@@ -9,8 +9,6 @@ import 'package:flutter_dev_connector/widgets/text_form_field_date_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddExperienceView extends StatefulWidget {
-  static const routeName = "/add-experience";
-
   @override
   _AddExperienceViewState createState() => _AddExperienceViewState();
 }

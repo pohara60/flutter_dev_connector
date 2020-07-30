@@ -10,17 +10,17 @@ import 'package:flutter_dev_connector/widgets/profile_top_widget.dart';
 import 'package:provider/provider.dart';
 
 class ProfileDetailView extends StatelessWidget {
-  static const routeName = "/profile";
   final log = getLogger('ProfileDetailView');
+  final String _userId;
+
+  ProfileDetailView(this._userId);
 
   @override
   Widget build(BuildContext context) {
     log.v('build called v');
-    // TODO: Why does this line causes rebuild on pop?
-    final String userId = ModalRoute.of(context).settings.arguments;
     final profileService = Provider.of<ProfileService>(context, listen: false);
     return FutureBuilder(
-      future: profileService.getProfileById(userId),
+      future: profileService.getProfileById(_userId),
       builder: (ctx, snapshot) {
         if (!snapshot.hasData)
           return Center(child: CircularProgressIndicator());

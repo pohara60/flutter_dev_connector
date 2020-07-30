@@ -9,9 +9,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class UpdateProfileView extends StatefulWidget {
-  static const createRouteName = "/create-profile";
-  static const editRouteName = "/edit-profile";
-
   final bool _isUpdate;
   UpdateProfileView([this._isUpdate = false]);
 

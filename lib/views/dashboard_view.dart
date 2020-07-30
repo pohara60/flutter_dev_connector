@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
+import 'package:flutter_dev_connector/routing/routing_constants.dart';
 import 'package:flutter_dev_connector/services/alert_service.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
@@ -11,7 +12,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class DashboardView extends StatelessWidget {
-  static const routeName = '/dashboard';
   final log = getLogger('DashboardView');
 
   @override
@@ -64,7 +64,8 @@ class DashboardView extends StatelessWidget {
                         color: themeData.accentColor,
                         //textColor: Colors.white,
                         onPressed: () {
-                          Navigator.of(context).pushNamed('/create-profile');
+                          Navigator.of(context)
+                              .pushNamed(UpdateProfileViewCreateRoute);
                         },
                       ),
                     ],
@@ -151,7 +152,7 @@ class DashboardActionsWidget extends StatelessWidget {
       children: [
         FlatButton.icon(
           onPressed: () {
-            Navigator.of(context).pushNamed('/edit-profile');
+            Navigator.of(context).pushNamed(UpdateProfileViewEditRoute);
           },
           icon: Icon(Icons.person),
           label: Text('Edit Profile'),
@@ -180,7 +181,7 @@ class ExperienceWidget extends StatelessWidget {
             Text('Experience', style: themeData.textTheme.headline5),
             FlatButton.icon(
               onPressed: () {
-                Navigator.of(context).pushNamed('/add-experience');
+                Navigator.of(context).pushNamed(AddExperienceViewRoute);
               },
               icon: Icon(FontAwesomeIcons.blackTie),
               label: Text('Add Experience'),
@@ -279,7 +280,7 @@ class EducationWidget extends StatelessWidget {
             Text('Education', style: themeData.textTheme.headline5),
             FlatButton.icon(
               onPressed: () {
-                Navigator.of(context).pushNamed('/add-education');
+                Navigator.of(context).pushNamed(AddEducationViewRoute);
               },
               icon: Icon(FontAwesomeIcons.graduationCap),
               label: Text('Add Education'),

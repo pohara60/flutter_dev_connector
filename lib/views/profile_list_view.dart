@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
+import 'package:flutter_dev_connector/routing/routing_constants.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
-import 'package:flutter_dev_connector/views/profile_detail_view.dart';
 import 'package:flutter_dev_connector/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 
 class ProfileListView extends StatelessWidget {
-  static const routeName = '/profiles';
   final log = getLogger('ProfileListView');
 
   @override
@@ -59,11 +58,9 @@ class ProfileListTileView extends StatelessWidget {
             (profile.company != null ? " at " + profile.company : null),
       ),
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (ctx) => ProfileDetailView(),
-            settings: RouteSettings(arguments: profile.user.id),
-          ),
+        Navigator.of(context).pushNamed(
+          ProfileDetailViewRoute,
+          arguments: profile.user.id,
         );
       },
     );

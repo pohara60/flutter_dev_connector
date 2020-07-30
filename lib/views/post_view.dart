@@ -4,19 +4,19 @@ import 'package:flutter_dev_connector/services/alert_service.dart';
 import 'package:flutter_dev_connector/services/post_service.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
 import 'package:flutter_dev_connector/widgets/alert_widget.dart';
-import 'package:flutter_dev_connector/widgets/app_drawer.dart';
 import 'package:flutter_dev_connector/widgets/comment_item_widget.dart';
 import 'package:flutter_dev_connector/widgets/post_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class PostView extends StatelessWidget {
-  static const routeName = '/post';
   final log = getLogger('PostView');
+  final String _postId;
+
+  PostView(this._postId);
 
   @override
   Widget build(BuildContext context) {
     log.v('build called');
-    final _postId = ModalRoute.of(context).settings.arguments;
     var _comment = Comment();
     final postService = Provider.of<PostService>(context);
     return Scaffold(

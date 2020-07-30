@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dev_connector/routing/routing_constants.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -37,27 +38,27 @@ class AppDrawer extends StatelessWidget {
           buildListTile(
             'Dashboard',
             Icons.person,
-            () => Navigator.of(context).pushReplacementNamed('/'),
+            () =>
+                Navigator.of(context).pushReplacementNamed(DashboardViewRoute),
           ),
           buildListTile(
             'Developers',
             Icons.developer_mode,
-            () => Navigator.of(context).pushReplacementNamed('/profiles'),
+            () => Navigator.of(context)
+                .pushReplacementNamed(ProfileListViewRoute),
           ),
           buildListTile(
             'Posts',
             Icons.email,
-            () => Navigator.of(context).pushReplacementNamed('/posts'),
+            () => Navigator.of(context).pushReplacementNamed(PostsViewRoute),
           ),
           buildListTile('Register', FontAwesomeIcons.pencilAlt, () {
-            Navigator.of(context).pushReplacementNamed('/signup');
+            Navigator.of(context).pushReplacementNamed(AuthScreenSignupRoute);
           }),
           buildListTile('Login', FontAwesomeIcons.signInAlt, () {
-            Navigator.of(context).pushReplacementNamed('/login');
+            Navigator.of(context).pushReplacementNamed(AuthScreenLoginRoute);
           }),
           buildListTile('Logout', FontAwesomeIcons.signOutAlt, () {
-            // Navigator.of(context).pop();
-            // Navigator.of(context).pushReplacementNamed('/');
             Provider.of<AuthService>(context, listen: false).logout();
           }),
         ],

@@ -10,7 +10,6 @@ import 'package:flutter_dev_connector/widgets/post_item_widget.dart';
 import 'package:provider/provider.dart';
 
 class PostsView extends StatelessWidget {
-  static const routeName = '/posts';
   final log = getLogger('PostsView');
 
   @override
