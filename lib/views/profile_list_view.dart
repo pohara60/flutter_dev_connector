@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
+import 'package:flutter_dev_connector/routing/router.dart';
 import 'package:flutter_dev_connector/routing/routing_constants.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
@@ -59,8 +60,8 @@ class ProfileListTileView extends StatelessWidget {
       ),
       onTap: () {
         Navigator.of(context).pushNamed(
-          ProfileDetailViewRoute,
-          arguments: profile.user.id,
+          routeWithQueryParams(ProfileDetailViewRoute,
+              queryParams: {'id': profile.user.id}),
         );
       },
     );

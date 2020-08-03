@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dev_connector/routing/routing_constants.dart';
 import 'package:flutter_dev_connector/services/alert_service.dart';
 import 'package:flutter_dev_connector/models/alert.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
@@ -156,8 +157,13 @@ class _AuthCardState extends State<AuthCard>
       var errorMessage = 'Authentication failed - ${error.toString()}';
       _showErrorDialog(errorMessage);
     }
+    setState(() {
+      _isLoading = false;
+    });
 
-    if (authService.token == null) {
+    if (authService.token != null) {
+      Navigator.of(context).pushReplacementNamed(DashboardViewRoute);
+    } else {
       final alertService = Provider.of<AlertService>(context, listen: false);
       if (authService.hasError) {
         for (var msg in authService.errorMsgs) {
@@ -169,9 +175,6 @@ class _AuthCardState extends State<AuthCard>
             AlertType.Danger);
       }
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   void _switchAuthMode() {

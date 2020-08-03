@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dev_connector/models/post.dart';
+import 'package:flutter_dev_connector/routing/router.dart';
 import 'package:flutter_dev_connector/routing/routing_constants.dart';
 import 'package:flutter_dev_connector/services/alert_service.dart';
 import 'package:flutter_dev_connector/services/post_service.dart';
@@ -81,8 +82,8 @@ class PostItemWidget extends StatelessWidget {
                           ? null
                           : () {
                               Navigator.of(context).pushNamed(
-                                PostViewRoute,
-                                arguments: post.id,
+                                routeWithQueryParams(PostViewRoute,
+                                    queryParams: {'id': post.id}),
                               );
                             },
                     ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dev_connector/extensions/string_extensions.dart';
 import 'package:flutter_dev_connector/routing/routing_constants.dart';
 import 'package:flutter_dev_connector/routing/undefined_view.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
@@ -14,10 +15,12 @@ import 'package:flutter_dev_connector/views/splash_screen.dart';
 import 'package:flutter_dev_connector/views/update_profile_view.dart';
 
 Route<dynamic> generateRoute(AuthService authService, RouteSettings settings) {
+  var routingData = settings.name.getRoutingData; // Get the routing Data
+
   Widget ifAuth(Widget targetScreen) =>
       authService.isAuth ? targetScreen : AuthScreen();
 
-  switch (settings.name) {
+  switch (routingData.route) {
     case DashboardViewRoute:
       return MaterialPageRoute(
         builder: (context) => authService.isAuth
@@ -29,36 +32,73 @@ Route<dynamic> generateRoute(AuthService authService, RouteSettings settings) {
                         ? SplashScreen()
                         : AuthScreen(),
               ),
+        settings: settings,
       );
     case ProfileListViewRoute:
-      return MaterialPageRoute(builder: (context) => ProfileListView());
+      return MaterialPageRoute(
+        builder: (context) => ProfileListView(),
+        settings: settings,
+      );
     case ProfileDetailViewRoute:
-      final userId = settings.arguments;
-      return MaterialPageRoute(builder: (context) => ProfileDetailView(userId));
+      var userId = routingData['id']; // Get the id from the data.
+      return MaterialPageRoute(
+        builder: (context) => ProfileDetailView(userId),
+        settings: settings,
+      );
     case UpdateProfileViewCreateRoute:
       return MaterialPageRoute(
-          builder: (context) => ifAuth(UpdateProfileView()));
+        builder: (context) => ifAuth(UpdateProfileView()),
+        settings: settings,
+      );
     case UpdateProfileViewEditRoute:
       return MaterialPageRoute(
-          builder: (context) => ifAuth(UpdateProfileView(true)));
+        builder: (context) => ifAuth(UpdateProfileView(true)),
+        settings: settings,
+      );
     case AuthScreenLoginRoute:
-      return MaterialPageRoute(builder: (context) => ifAuth(AuthScreen()));
+      return MaterialPageRoute(
+        builder: (context) => ifAuth(AuthScreen()),
+        settings: settings,
+      );
     case AuthScreenSignupRoute:
-      return MaterialPageRoute(builder: (context) => ifAuth(AuthScreen(true)));
+      return MaterialPageRoute(
+        builder: (context) => ifAuth(AuthScreen(true)),
+        settings: settings,
+      );
     case AddExperienceViewRoute:
       return MaterialPageRoute(
-          builder: (context) => ifAuth(AddExperienceView()));
+        builder: (context) => ifAuth(AddExperienceView()),
+        settings: settings,
+      );
     case AddEducationViewRoute:
       return MaterialPageRoute(
-          builder: (context) => ifAuth(AddEducationView()));
+        builder: (context) => ifAuth(AddEducationView()),
+        settings: settings,
+      );
     case PostsViewRoute:
-      return MaterialPageRoute(builder: (context) => ifAuth(PostsView()));
+      return MaterialPageRoute(
+        builder: (context) => ifAuth(PostsView()),
+        settings: settings,
+      );
     case PostViewRoute:
-      final postId = settings.arguments;
-      return MaterialPageRoute(builder: (context) => ifAuth(PostView(postId)));
+      var postId = routingData['id']; // Get the id from the data.
+      return MaterialPageRoute(
+        builder: (context) => ifAuth(PostView(postId)),
+        settings: settings,
+      );
 
     default:
       return MaterialPageRoute(
-          builder: (context) => UndefinedView(name: settings.name));
+        builder: (context) => UndefinedView(name: settings.name),
+        settings: settings,
+      );
   }
+}
+
+String routeWithQueryParams(String routeName,
+    {Map<String, String> queryParams}) {
+  if (queryParams != null) {
+    routeName = Uri(path: routeName, queryParameters: queryParams).toString();
+  }
+  return routeName;
 }

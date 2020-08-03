@@ -44,6 +44,7 @@ class DevConnectorApp extends StatelessWidget {
           onGenerateRoute: (settings) =>
               router.generateRoute(authService, settings),
           initialRoute: DashboardViewRoute,
+          builder: (context, child) => child,
         );
       }),
     );

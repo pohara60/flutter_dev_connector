@@ -60,6 +60,7 @@ class AppDrawer extends StatelessWidget {
           }),
           buildListTile('Logout', FontAwesomeIcons.signOutAlt, () {
             Provider.of<AuthService>(context, listen: false).logout();
+            Navigator.of(context).pushReplacementNamed(AuthScreenLoginRoute);
           }),
         ],
       ),
