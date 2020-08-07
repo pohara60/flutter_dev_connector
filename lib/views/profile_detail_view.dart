@@ -25,44 +25,32 @@ class ProfileDetailView extends StatelessWidget {
         if (!snapshot.hasData)
           return Center(child: CircularProgressIndicator());
         final Profile profile = snapshot.data;
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(profile.user.name),
-          ),
-          body: SingleChildScrollView(
-            child: Container(
-              width: double.infinity,
-              margin: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  // FlatButton.icon(
-                  //   icon: Icon(Icons.arrow_back),
-                  //   label: Text('Go Back'),
-                  //   onPressed: () {
-                  //     Navigator.of(ctx).pop();
-                  //   },
-                  // ),
-                  section(
+        return SingleChildScrollView(
+          child: Container(
+            width: double.infinity,
+            margin: EdgeInsets.all(20),
+            child: Column(
+              children: [
+                section(
+                  context: context,
+                  child: ProfileTopWidget(profile),
+                  color: Theme.of(context).accentColor,
+                ),
+                SizedBox(height: 20),
+                section(context: context, child: ProfileAboutWidget(profile)),
+                SizedBox(height: 20),
+                section(
                     context: context,
-                    child: ProfileTopWidget(profile),
-                    color: Theme.of(context).accentColor,
-                  ),
-                  SizedBox(height: 20),
-                  section(context: context, child: ProfileAboutWidget(profile)),
-                  SizedBox(height: 20),
-                  section(
-                      context: context,
-                      child: ProfileExperienceWidget(profile.experience)),
-                  SizedBox(height: 20),
-                  section(
-                      context: context,
-                      child: ProfileEducationWidget(profile.education)),
-                  SizedBox(height: 20),
-                  section(
-                      context: context,
-                      child: ProfileGithubWidget(profile.githubusername)),
-                ],
-              ),
+                    child: ProfileExperienceWidget(profile.experience)),
+                SizedBox(height: 20),
+                section(
+                    context: context,
+                    child: ProfileEducationWidget(profile.education)),
+                SizedBox(height: 20),
+                section(
+                    context: context,
+                    child: ProfileGithubWidget(profile.githubusername)),
+              ],
             ),
           ),
         );

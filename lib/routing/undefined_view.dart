@@ -6,10 +6,8 @@ class UndefinedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text('Route for $name is not defined'),
-      ),
+    return Center(
+      child: Text('Route for $name is not defined'),
     );
   }
 }

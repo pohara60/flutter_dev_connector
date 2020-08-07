@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dev_connector/locator.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
-import 'package:flutter_dev_connector/routing/router.dart';
 import 'package:flutter_dev_connector/routing/routing_constants.dart';
+import 'package:flutter_dev_connector/services/navigation_service.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
-import 'package:flutter_dev_connector/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 
 class ProfileListView extends StatelessWidget {
@@ -13,24 +13,18 @@ class ProfileListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log.v('build called');
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Dev Connector'),
-      ),
-      drawer: AppDrawer(),
-      body: Consumer<ProfileService>(
-        builder: (ctx, profileService, _) => FutureBuilder(
-          future: profileService.getProfiles(),
-          builder: (ctx, snapshot) {
-            if (!snapshot.hasData)
-              return Center(child: CircularProgressIndicator());
-            final List<Profile> profiles = snapshot.data;
-            return ListView.builder(
-              itemCount: profiles.length,
-              itemBuilder: (ctx, index) => ProfileListTileView(profiles[index]),
-            );
-          },
-        ),
+    return Consumer<ProfileService>(
+      builder: (ctx, profileService, _) => FutureBuilder(
+        future: profileService.getProfiles(),
+        builder: (ctx, snapshot) {
+          if (!snapshot.hasData)
+            return Center(child: CircularProgressIndicator());
+          final List<Profile> profiles = snapshot.data;
+          return ListView.builder(
+            itemCount: profiles.length,
+            itemBuilder: (ctx, index) => ProfileListTileView(profiles[index]),
+          );
+        },
       ),
     );
   }
@@ -59,9 +53,9 @@ class ProfileListTileView extends StatelessWidget {
             (profile.company != null ? " at " + profile.company : null),
       ),
       onTap: () {
-        Navigator.of(context).pushNamed(
-          routeWithQueryParams(ProfileDetailViewRoute,
-              queryParams: {'id': profile.user.id}),
+        locator<NavigationService>().navigateTo(
+          ProfileDetailViewRoute,
+          queryParams: {'id': profile.user.id},
         );
       },
     );

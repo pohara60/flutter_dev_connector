@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dev_connector/locator.dart';
 import 'package:flutter_dev_connector/models/post.dart';
 import 'package:flutter_dev_connector/services/alert_service.dart';
+import 'package:flutter_dev_connector/services/navigation_service.dart';
 import 'package:flutter_dev_connector/services/post_service.dart';
 import 'package:flutter_dev_connector/utils/date_format.dart';
 import 'package:provider/provider.dart';
@@ -80,7 +82,7 @@ class CommentItemWidget extends StatelessWidget {
                               FlatButton(
                                   child: Text('OK'),
                                   onPressed: () {
-                                    Navigator.of(ctx).pop();
+                                    locator<NavigationService>().goBack();
                                   })
                             ],
                           ),

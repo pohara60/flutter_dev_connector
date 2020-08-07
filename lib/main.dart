@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dev_connector/locator.dart';
 import 'package:flutter_dev_connector/routing/router.dart' as router;
 import 'package:flutter_dev_connector/routing/routing_constants.dart';
 import 'package:flutter_dev_connector/services/alert_service.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
+import 'package:flutter_dev_connector/services/navigation_service.dart';
 import 'package:flutter_dev_connector/services/post_service.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/app_theme.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
+import 'package:flutter_dev_connector/views/layout_template/layout_template.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  setupLocator();
   runApp(DevConnectorApp());
 }
 
@@ -41,10 +45,13 @@ class DevConnectorApp extends StatelessWidget {
         return MaterialApp(
           title: 'Flutter Dev Connector',
           theme: getAppTheme(context),
+          navigatorKey: locator<NavigationService>().navigatorKey,
           onGenerateRoute: (settings) =>
               router.generateRoute(authService, settings),
           initialRoute: DashboardViewRoute,
-          builder: (context, child) => child,
+          builder: (context, child) => LayoutTemplate(
+            child: child,
+          ),
         );
       }),
     );

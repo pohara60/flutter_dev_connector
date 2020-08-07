@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dev_connector/locator.dart';
 import 'package:flutter_dev_connector/models/profile.dart';
 import 'package:flutter_dev_connector/routing/routing_constants.dart';
 import 'package:flutter_dev_connector/services/alert_service.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
+import 'package:flutter_dev_connector/services/navigation_service.dart';
 import 'package:flutter_dev_connector/services/profile_service.dart';
 import 'package:flutter_dev_connector/utils/date_format.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
 import 'package:flutter_dev_connector/widgets/alert_widget.dart';
-import 'package:flutter_dev_connector/widgets/app_drawer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -19,76 +20,69 @@ class DashboardView extends StatelessWidget {
     log.v('build called');
     final authService = Provider.of<AuthService>(context);
     final profileService = Provider.of<ProfileService>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Dev Connector'),
-      ),
-      drawer: AppDrawer(),
-      body: FutureBuilder(
-        future: profileService.getCurrentProfile(),
-        builder: (ctx, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
-            return Center(child: CircularProgressIndicator());
-          final Profile profile = snapshot.data;
-          final themeData = Theme.of(context);
-          return Container(
-            width: double.infinity,
-            margin: EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AlertWidget(),
-                Text('Dashboard', style: themeData.textTheme.headline3),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
+    return FutureBuilder(
+      future: profileService.getCurrentProfile(),
+      builder: (ctx, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return Center(child: CircularProgressIndicator());
+        final Profile profile = snapshot.data;
+        final themeData = Theme.of(context);
+        return Container(
+          width: double.infinity,
+          margin: EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AlertWidget(),
+              Text('Dashboard', style: themeData.textTheme.headline3),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.person, color: themeData.accentColor),
+                  Text('Welcome ${authService.user?.name}',
+                      style: themeData.textTheme.headline5),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              if (profile == null)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(Icons.person, color: themeData.accentColor),
-                    Text('Welcome ${authService.user?.name}',
-                        style: themeData.textTheme.headline5),
+                    Text(
+                        'You have not yet setup a profile, please add some info'),
+                    RaisedButton(
+                      child: Text('Create Profile',
+                          style: themeData.accentTextTheme.button),
+                      color: themeData.accentColor,
+                      //textColor: Colors.white,
+                      onPressed: () {
+                        locator<NavigationService>()
+                            .navigateTo(UpdateProfileViewCreateRoute);
+                      },
+                    ),
                   ],
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                if (profile == null)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              if (profile != null)
+                Expanded(
+                  child: ListView(
+                    shrinkWrap: true,
                     children: [
-                      Text(
-                          'You have not yet setup a profile, please add some info'),
-                      RaisedButton(
-                        child: Text('Create Profile',
-                            style: themeData.accentTextTheme.button),
-                        color: themeData.accentColor,
-                        //textColor: Colors.white,
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed(UpdateProfileViewCreateRoute);
-                        },
-                      ),
+                      DashboardActionsWidget(),
+                      ExperienceWidget(profile.experience),
+                      EducationWidget(profile.education),
+                      DeleteAccountWidget(
+                          themeData: themeData, profileService: profileService),
                     ],
                   ),
-                if (profile != null)
-                  Expanded(
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        DashboardActionsWidget(),
-                        ExperienceWidget(profile.experience),
-                        EducationWidget(profile.education),
-                        DeleteAccountWidget(
-                            themeData: themeData,
-                            profileService: profileService),
-                      ],
-                    ),
-                  ),
-              ],
-            ),
-          );
-        },
-      ),
+                ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
@@ -121,7 +115,7 @@ class DeleteAccountWidget extends StatelessWidget {
                 actions: <Widget>[
                   FlatButton(
                     child: Text('No'),
-                    onPressed: () => Navigator.of(context).pop(false),
+                    onPressed: () => locator<NavigationService>().goBack(false),
                   ),
                   FlatButton(
                       child: Text('Yes'),
@@ -130,7 +124,7 @@ class DeleteAccountWidget extends StatelessWidget {
                         Provider.of<AlertService>(context, listen: false)
                             .addAlert(
                                 "Your account has been permanently deleted");
-                        Navigator.of(context).pop(true);
+                        locator<NavigationService>().goBack(true);
                       }),
                 ],
               ),
@@ -152,7 +146,7 @@ class DashboardActionsWidget extends StatelessWidget {
       children: [
         FlatButton.icon(
           onPressed: () {
-            Navigator.of(context).pushNamed(UpdateProfileViewEditRoute);
+            locator<NavigationService>().navigateTo(UpdateProfileViewEditRoute);
           },
           icon: Icon(Icons.person),
           label: Text('Edit Profile'),
@@ -181,7 +175,7 @@ class ExperienceWidget extends StatelessWidget {
             Text('Experience', style: themeData.textTheme.headline5),
             FlatButton.icon(
               onPressed: () {
-                Navigator.of(context).pushNamed(AddExperienceViewRoute);
+                locator<NavigationService>().navigateTo(AddExperienceViewRoute);
               },
               icon: Icon(FontAwesomeIcons.blackTie),
               label: Text('Add Experience'),
@@ -280,7 +274,7 @@ class EducationWidget extends StatelessWidget {
             Text('Education', style: themeData.textTheme.headline5),
             FlatButton.icon(
               onPressed: () {
-                Navigator.of(context).pushNamed(AddEducationViewRoute);
+                locator<NavigationService>().navigateTo(AddEducationViewRoute);
               },
               icon: Icon(FontAwesomeIcons.graduationCap),
               label: Text('Add Education'),

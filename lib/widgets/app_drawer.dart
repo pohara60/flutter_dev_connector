@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dev_connector/locator.dart';
 import 'package:flutter_dev_connector/routing/routing_constants.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
+import 'package:flutter_dev_connector/services/navigation_service.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -38,29 +40,29 @@ class AppDrawer extends StatelessWidget {
           buildListTile(
             'Dashboard',
             Icons.person,
-            () =>
-                Navigator.of(context).pushReplacementNamed(DashboardViewRoute),
+            () => locator<NavigationService>()
+                .navigateReplace(DashboardViewRoute),
           ),
           buildListTile(
             'Developers',
             Icons.developer_mode,
-            () => Navigator.of(context)
-                .pushReplacementNamed(ProfileListViewRoute),
+            () => locator<NavigationService>()
+                .navigateReplace(ProfileListViewRoute),
           ),
           buildListTile(
             'Posts',
             Icons.email,
-            () => Navigator.of(context).pushReplacementNamed(PostsViewRoute),
+            () => locator<NavigationService>().navigateReplace(PostsViewRoute),
           ),
           buildListTile('Register', FontAwesomeIcons.pencilAlt, () {
-            Navigator.of(context).pushReplacementNamed(AuthScreenSignupRoute);
+            locator<NavigationService>().navigateReplace(AuthScreenSignupRoute);
           }),
           buildListTile('Login', FontAwesomeIcons.signInAlt, () {
-            Navigator.of(context).pushReplacementNamed(AuthScreenLoginRoute);
+            locator<NavigationService>().navigateReplace(AuthScreenLoginRoute);
           }),
           buildListTile('Logout', FontAwesomeIcons.signOutAlt, () {
             Provider.of<AuthService>(context, listen: false).logout();
-            Navigator.of(context).pushReplacementNamed(AuthScreenLoginRoute);
+            locator<NavigationService>().navigateReplace(AuthScreenLoginRoute);
           }),
         ],
       ),

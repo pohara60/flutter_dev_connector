@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dev_connector/locator.dart';
 import 'package:flutter_dev_connector/routing/routing_constants.dart';
 import 'package:flutter_dev_connector/services/alert_service.dart';
 import 'package:flutter_dev_connector/models/alert.dart';
 import 'package:flutter_dev_connector/services/auth_service.dart';
+import 'package:flutter_dev_connector/services/navigation_service.dart';
 import 'package:flutter_dev_connector/utils/logger.dart';
 import 'package:flutter_dev_connector/widgets/alert_widget.dart';
-import 'package:flutter_dev_connector/widgets/app_drawer.dart';
 import 'package:provider/provider.dart';
 
 import '../models/http_exception.dart';
@@ -25,14 +26,10 @@ class AuthScreen extends StatelessWidget {
     final bottomInset = mediaQueryData.viewInsets.bottom;
     log.v('build called');
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Dev Connector'),
-      ),
-      drawer: AppDrawer(),
-      // resizeToAvoidBottomInset: false,
-      body: AuthContainer(
-          deviceSize: deviceSize, bottomInset: bottomInset, isSignup: isSignup),
+    return AuthContainer(
+      deviceSize: deviceSize,
+      bottomInset: bottomInset,
+      isSignup: isSignup,
     );
   }
 }
@@ -51,7 +48,7 @@ class AuthContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double topInset = Scaffold.of(context).appBarMaxHeight;
+    double topInset = 80; // Navigation Bar height
     return SingleChildScrollView(
       child: Container(
         height: deviceSize.height - topInset,
@@ -118,7 +115,7 @@ class _AuthCardState extends State<AuthCard>
                 FlatButton(
                   child: Text('OK'),
                   onPressed: () {
-                    Navigator.of(ctx).pop();
+                    locator<NavigationService>().goBack();
                   },
                 )
               ],
@@ -162,7 +159,7 @@ class _AuthCardState extends State<AuthCard>
     });
 
     if (authService.token != null) {
-      Navigator.of(context).pushReplacementNamed(DashboardViewRoute);
+      locator<NavigationService>().navigateReplace(DashboardViewRoute);
     } else {
       final alertService = Provider.of<AlertService>(context, listen: false);
       if (authService.hasError) {

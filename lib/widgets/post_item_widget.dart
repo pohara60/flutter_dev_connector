@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dev_connector/locator.dart';
 import 'package:flutter_dev_connector/models/post.dart';
-import 'package:flutter_dev_connector/routing/router.dart';
 import 'package:flutter_dev_connector/routing/routing_constants.dart';
 import 'package:flutter_dev_connector/services/alert_service.dart';
+import 'package:flutter_dev_connector/services/navigation_service.dart';
 import 'package:flutter_dev_connector/services/post_service.dart';
 import 'package:provider/provider.dart';
 
@@ -81,9 +82,9 @@ class PostItemWidget extends StatelessWidget {
                       onPressed: !update
                           ? null
                           : () {
-                              Navigator.of(context).pushNamed(
-                                routeWithQueryParams(PostViewRoute,
-                                    queryParams: {'id': post.id}),
+                              locator<NavigationService>().navigateTo(
+                                PostViewRoute,
+                                queryParams: {'id': post.id},
                               );
                             },
                     ),
@@ -113,7 +114,7 @@ class PostItemWidget extends StatelessWidget {
                                     FlatButton(
                                         child: Text('OK'),
                                         onPressed: () {
-                                          Navigator.of(ctx).pop();
+                                          locator<NavigationService>().goBack();
                                         })
                                   ],
                                 ),

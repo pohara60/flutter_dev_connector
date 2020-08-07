@@ -21,6 +21,7 @@ Route<dynamic> generateRoute(AuthService authService, RouteSettings settings) {
       authService.isAuth ? targetScreen : AuthScreen();
 
   switch (routingData.route) {
+    case '/': // Must handle /
     case DashboardViewRoute:
       return MaterialPageRoute(
         builder: (context) => authService.isAuth
@@ -57,12 +58,12 @@ Route<dynamic> generateRoute(AuthService authService, RouteSettings settings) {
       );
     case AuthScreenLoginRoute:
       return MaterialPageRoute(
-        builder: (context) => ifAuth(AuthScreen()),
+        builder: (context) => AuthScreen(),
         settings: settings,
       );
     case AuthScreenSignupRoute:
       return MaterialPageRoute(
-        builder: (context) => ifAuth(AuthScreen(true)),
+        builder: (context) => AuthScreen(true),
         settings: settings,
       );
     case AddExperienceViewRoute:
